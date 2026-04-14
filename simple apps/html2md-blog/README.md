@@ -1,6 +1,7 @@
-# Blog to Markdown Converter (html2md_blog.py)
-
 A specialized tool for converting blog articles into an LLM-friendly Markdown format.
+
+> [!NOTE]
+> Designed to process the output from [**`getblog`**](../getblog/).
 
 ## Prerequisites
 ```bash

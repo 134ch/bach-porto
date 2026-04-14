@@ -1,6 +1,7 @@
-# Blog Downloader (getblog.py)
-
 This script automates the process of downloading blog articles from a list of URLs and saving them in both raw HTML and cleaned text formats.
+
+> [!TIP]
+> **Next Step:** After downloading, use [**`html2md-blog`**](../html2md-blog/) to convert these HTML files into high-quality, LLM-friendly Markdown.
 
 ## Prerequisites
 ```bash

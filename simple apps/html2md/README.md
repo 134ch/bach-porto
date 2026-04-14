@@ -1,6 +1,7 @@
-# HTML to Markdown Converter (html2md.py)
-
 A specialized tool for converting Skool-specific HTML files into clean Markdown documents. It extracts titles, preserves formatting, and captures video embeds from popular platforms.
+
+> [!NOTE]
+> Designed to process the output from [**`skool-downloader`**](../skool-downloader/).
 
 ## Prerequisites
 ```bash

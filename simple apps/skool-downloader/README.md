@@ -1,6 +1,7 @@
-# Skool Downloader (skool_downloader.py)
-
 A professional automation tool to download Skool community posts and lessons as HTML files. It handles authentication, dynamic content loading, and automated batch processing.
+
+> [!TIP]
+> **Next Step:** After downloading, use [**`html2md`**](../html2md/) to convert these HTML files into clean Markdown.
 
 ## Prerequisites
 ```bash
