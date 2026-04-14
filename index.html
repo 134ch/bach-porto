@@ -56,7 +56,7 @@
             position: fixed;
             top: 0;
             width: 100%;
-            padding: 1.5rem 5%;
+            padding: 1.2rem 5%;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -67,7 +67,7 @@
         }
 
         .logo {
-            font-size: 1.5rem;
+            font-size: 1.3rem;
             font-weight: 800;
             letter-spacing: -1px;
             background: linear-gradient(90deg, var(--accent-primary), var(--accent-secondary));
@@ -75,11 +75,15 @@
             -webkit-text-fill-color: transparent;
         }
 
+        nav {
+            display: flex;
+            gap: 1.5rem;
+        }
+
         nav a {
             color: var(--text-muted);
             text-decoration: none;
-            margin-left: 2rem;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             font-weight: 500;
             transition: color 0.3s;
         }
@@ -129,6 +133,15 @@
             color: var(--text-muted);
             font-size: clamp(1rem, 2vw, 1.2rem);
             margin-bottom: 3rem;
+            line-height: 1.8;
+        }
+
+        .tech-stack-hero {
+            max-width: 700px;
+            margin: 0 auto 2rem;
+            color: var(--accent-primary);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.9rem;
         }
 
         .hero-buttons {
@@ -183,6 +196,14 @@
             background: var(--glass-border);
         }
 
+        .section-intro {
+            color: var(--text-muted);
+            font-size: 1rem;
+            max-width: 800px;
+            margin-bottom: 3rem;
+            line-height: 1.8;
+        }
+
         /* --- Grid Layouts --- */
         .grid {
             display: grid;
@@ -199,12 +220,107 @@
             transition: all 0.4s;
             text-decoration: none;
             color: inherit;
+            position: relative;
+            display: flex;
+            flex-direction: column;
         }
 
         .card:hover {
             border-color: var(--accent-primary);
             transform: translateY(-8px);
             background: rgba(13, 17, 23, 0.9);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1.5rem;
+        }
+
+        .card-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--accent-primary);
+        }
+
+        .github-icon {
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0.6;
+            transition: opacity 0.3s;
+        }
+
+        .card:hover .github-icon {
+            opacity: 1;
+            color: var(--accent-primary);
+        }
+
+        .card-description {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            margin-bottom: 1.5rem;
+            line-height: 1.8;
+            flex-grow: 1;
+        }
+
+        .tech-badges {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 1.5rem;
+        }
+
+        .tech-badge {
+            background: rgba(0, 242, 255, 0.1);
+            border: 1px solid var(--accent-primary);
+            color: var(--accent-primary);
+            padding: 0.4rem 0.8rem;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .cli-copy {
+            background: #161b22;
+            padding: 0.8rem 1.2rem;
+            border-radius: 8px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.8rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: var(--accent-primary);
+            border: 1px solid #30363d;
+            cursor: pointer;
+            margin-top: auto;
+            transition: all 0.3s;
+        }
+
+        .cli-copy:hover {
+            border-color: var(--accent-primary);
+            box-shadow: 0 0 15px rgba(0, 242, 255, 0.2);
+        }
+
+        .view-code-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            color: var(--accent-primary);
+            text-decoration: none;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-top: 1rem;
+            transition: all 0.3s;
+        }
+
+        .view-code-link:hover {
+            gap: 10px;
         }
 
         /* --- Experience & Skills Specific --- */
@@ -271,23 +387,40 @@
             border: 1px solid var(--glass-border);
         }
 
-        /* --- Terminal Tool --- */
-        .cli-copy {
-            background: #161b22;
-            padding: 0.8rem 1.2rem;
-            border-radius: 8px;
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.8rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            color: var(--accent-primary);
-            border: 1px solid #30363d;
-            cursor: pointer;
-            margin-top: 1.5rem;
+        /* --- CTA Section --- */
+        .cta-section {
+            background: linear-gradient(135deg, rgba(0, 242, 255, 0.05) 0%, rgba(112, 0, 255, 0.05) 100%);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            padding: 4rem 3rem;
+            text-align: center;
+            margin: 6rem 5% 0;
+            max-width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
         }
 
-        .cli-copy:hover { border-color: var(--accent-primary); }
+        .cta-section h3 {
+            font-size: 2rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+        }
+
+        .cta-section p {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 1.5rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
 
         /* --- Footer --- */
         footer {
@@ -295,6 +428,23 @@
             text-align: center;
             border-top: 1px solid var(--glass-border);
             background: rgba(5,7,10,0.5);
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .perf-badge {
+            display: inline-block;
+            background: rgba(0, 255, 136, 0.1);
+            border: 1px solid var(--accent-success);
+            color: var(--accent-success);
+            padding: 0.6rem 1.2rem;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            font-family: 'JetBrains Mono', monospace;
+            margin-bottom: 1.5rem;
         }
 
         .social-links {
@@ -306,6 +456,35 @@
 
         .social-links a { color: var(--text-main); text-decoration: none; font-weight: 600; font-size: 0.9rem; }
         .social-links a:hover { color: var(--accent-primary); }
+
+        /* --- Back to Top --- */
+        .back-to-top {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            width: 50px;
+            height: 50px;
+            background: var(--accent-primary);
+            color: var(--bg-dark);
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            transition: all 0.3s;
+            z-index: 999;
+        }
+
+        .back-to-top:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 0 25px rgba(0, 242, 255, 0.4);
+        }
+
+        .back-to-top.show {
+            display: flex;
+        }
 
         /* --- Toast --- */
         #toast {
@@ -323,9 +502,21 @@
             z-index: 2000;
         }
 
+        @media (max-width: 900px) {
+            .grid { grid-template-columns: 1fr; }
+        }
+
         @media (max-width: 768px) {
+            header { padding: 1rem 5%; }
+            nav { gap: 1rem; }
+            nav a { font-size: 0.75rem; margin-left: 0; }
+            .hero { padding: 100px 5% 40px; }
             .hero h1 { font-size: 3rem; }
             .exp-header { flex-direction: column; }
+            .cta-section { padding: 2rem; }
+            .hero-buttons { flex-direction: column; width: 100%; }
+            .btn { width: 100%; justify-content: center; }
+            .back-to-top { width: 45px; height: 45px; bottom: 1.5rem; right: 1.5rem; }
         }
     </style>
 </head>
@@ -339,7 +530,7 @@
         <div class="logo">BACH.WIDY</div>
         <nav>
             <a href="#experience">Experience</a>
-            <a href="#suite">The Suite</a>
+            <a href="#suite">Projects</a>
             <a href="#skills">Skills</a>
             <a href="https://github.com/134ch/bach-porto" target="_blank">Repository</a>
         </nav>
@@ -348,12 +539,12 @@
     <section class="hero">
         <label class="hero-tag">Jakarta, Indonesia</label>
         <h1>Bachtiar <span>Widyantoro</span></h1>
-        <p>Full-stack developer with an engineering background. I build production-grade content engines and optimized infrastructure using AI-assisted workflows.</p>
+        <p>Full-stack developer bridging engineering precision and modern development. I design and deploy production-ready systems—from Python automation tools to cloud infrastructure—with a focus on solving real problems.</p>
+        <div class="tech-stack-hero">Python • JavaScript • Node.js • Cloudflare • Google Cloud</div>
         
         <div class="hero-buttons">
             <a href="#suite" class="btn btn-primary">Featured Work</a>
-            <a href="Bachtiar_Widyantoro_CV.pdf" target="_blank" class="btn btn-outline">📥 Download CV (PDF)</a>
-            <a href="mailto:bach.widy@gmail.com" class="btn btn-outline">Get in Touch</a>
+            <a href="Bachtiar_Widyantoro_CV.pdf" target="_blank" class="btn btn-outline">📥 Download CV</a>
         </div>
     </section>
 
@@ -372,9 +563,9 @@
                 <div class="exp-date">Feb 2025 – Present</div>
             </div>
             <ul class="exp-list">
-                <li>Built and deployed full-stack web infrastructure using Cloudflare Workers and modern API proxies.</li>
-                <li>Developed multiple Python-based content processing utilities (scrapers, converters, agents) versioned with Git.</li>
-                <li>Implemented real-time analytics dashboards using PostHog to track user engagement and inform decisions.</li>
+                <li>Architected a three-tier AI automation system with Build Layer (Claude Code), Runtime Layer (CrewAI/Google Cloud Run), and Interface Layer (Telegram/EdgeClaw).</li>
+                <li>Centralized LLM gateway via LiteLLM Proxy with Vertex AI, Exa API, and Chroma DB vector memory integration.</li>
+                <li>Implemented real-time analytics (PostHog) for user engagement tracking and feature iteration.</li>
             </ul>
         </div>
 
@@ -387,9 +578,9 @@
                 <div class="exp-date">Jan 2019 – Present</div>
             </div>
             <ul class="exp-list">
-                <li>Delivered 15+ client projects on time using Agile methodologies with a 100% on-time delivery rate.</li>
-                <li>Led cross-functional teams through weekly sprint cycles and daily task coordination.</li>
-                <li>Designed QA processes achieving 98% compliance with technical standards.</li>
+                <li>Delivered 15+ client projects using Agile/Scrum with 100% on-time delivery and 90%+ satisfaction.</li>
+                <li>Led cross-functional teams (engineering, warehouse, sales, admin) through weekly sprints and daily standups.</li>
+                <li>Designed QA processes achieving 98% compliance with technical standards, minimizing post-launch issues.</li>
             </ul>
         </div>
     </section>
@@ -397,31 +588,94 @@
     <!-- The Python Suite -->
     <section id="suite" class="section">
         <div class="section-header">
-            <h2>The Python Suite</h2>
-            <p>Advanced utilities for content processing and asset auditing.</p>
+            <h2>Featured Projects</h2>
         </div>
 
+        <p class="section-intro">
+            Production-ready utilities for content processing and automation. Built with performance, reliability, and scalability in mind. Each tool includes CLI interfaces, environment configuration, and progress tracking.
+        </p>
+
         <div class="grid">
-            <a href="https://github.com/134ch/bach-porto/tree/main/simple-apps/skool-downloader" class="card" target="_blank">
-                <div class="card-icon">🌀</div>
-                <h3>Skool Downloader</h3>
-                <p>Advanced automation that handles multi-step login and dynamic content scrolling for full community archives.</p>
-                <div class="cli-copy" onclick="copyCmd(event, 'python skool_downloader.py')">python skool_downloader.py</div>
-            </a>
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title">Skool Downloader</div>
+                    <a href="https://github.com/134ch/bach-porto/tree/main/simple-apps/skool-downloader" target="_blank" class="github-icon">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-1.02-2.44c3.4-.38 7-1.72 7-6.96 0-1.55-.545-2.975-1.44-4.15.13-.304.63-1.56-.13-3.25 0 0-1.04-.33-3.4 1.27a11.48 11.48 0 0 0-6.16 0C6.91 2.88 5.87 3.21 5.87 3.21c-.76 1.69-.26 2.946-.13 3.25C5.545 6.025 5 7.45 5 9c0 5.24 3.6 6.58 7 6.96-.27.24-.54.73-.63 1.41-.57.25-2.01.69-2.89-.83-.09-.15-.67-.52-1.54-.51-.82.01-.53.45.01.67.44.26 1.29 1.22 1.45 1.52.25.5 1.04 1.32 2.26 1.16v3.23" />
+                        </svg>
+                    </a>
+                </div>
+                <div class="card-description">
+                    Advanced automation handling multi-step login, dynamic content scrolling, and full community archive downloads.
+                </div>
+                <div class="tech-badges">
+                    <span class="tech-badge">Python</span>
+                    <span class="tech-badge">Selenium</span>
+                    <span class="tech-badge">WebDriver</span>
+                    <span class="tech-badge">APIs</span>
+                </div>
+                <div class="cli-copy" onclick="copyCmd(event, 'python skool_downloader.py')">
+                    <span>python skool_downloader.py</span>
+                    <span>📑</span>
+                </div>
+                <a href="https://github.com/134ch/bach-porto/tree/main/simple-apps/skool-downloader" class="view-code-link" target="_blank">
+                    View Code →
+                </a>
+            </div>
 
-            <a href="https://github.com/134ch/bach-porto/tree/main/simple-apps/getblog" class="card" target="_blank">
-                <div class="card-icon">⚡</div>
-                <h3>Blog Crawler</h3>
-                <p>Fast, session-persistent crawler targeting public articles for archival and text cleaning.</p>
-                <div class="cli-copy" onclick="copyCmd(event, 'python getblog.py')">python getblog.py</div>
-            </a>
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title">Blog Crawler</div>
+                    <a href="https://github.com/134ch/bach-porto/tree/main/simple-apps/getblog" target="_blank" class="github-icon">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-1.02-2.44c3.4-.38 7-1.72 7-6.96 0-1.55-.545-2.975-1.44-4.15.13-.304.63-1.56-.13-3.25 0 0-1.04-.33-3.4 1.27a11.48 11.48 0 0 0-6.16 0C6.91 2.88 5.87 3.21 5.87 3.21c-.76 1.69-.26 2.946-.13 3.25C5.545 6.025 5 7.45 5 9c0 5.24 3.6 6.58 7 6.96-.27.24-.54.73-.63 1.41-.57.25-2.01.69-2.89-.83-.09-.15-.67-.52-1.54-.51-.82.01-.53.45.01.67.44.26 1.29 1.22 1.45 1.52.25.5 1.04 1.32 2.26 1.16v3.23" />
+                        </svg>
+                    </a>
+                </div>
+                <div class="card-description">
+                    Fast, session-persistent crawler for article archival. Cleans text, preserves formatting, handles encoding issues.
+                </div>
+                <div class="tech-badges">
+                    <span class="tech-badge">Python</span>
+                    <span class="tech-badge">BeautifulSoup</span>
+                    <span class="tech-badge">Requests</span>
+                    <span class="tech-badge">Data Science</span>
+                </div>
+                <div class="cli-copy" onclick="copyCmd(event, 'python getblog.py')">
+                    <span>python getblog.py</span>
+                    <span>📑</span>
+                </div>
+                <a href="https://github.com/134ch/bach-porto/tree/main/simple-apps/getblog" class="view-code-link" target="_blank">
+                    View Code →
+                </a>
+            </div>
 
-            <a href="https://github.com/134ch/bach-porto/tree/main/simple-apps/mdtopdf" class="card" target="_blank">
-                <div class="card-icon">💎</div>
-                <h3>Premium MD to PDF</h3>
-                <p>Converts raw markdown into high-quality PDFs with custom CSS, page numbering, and CTA blocks.</p>
-                <div class="cli-copy" onclick="copyCmd(event, 'python mdtopdf.py')">python mdtopdf.py</div>
-            </a>
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title">Premium MD to PDF</div>
+                    <a href="https://github.com/134ch/bach-porto/tree/main/simple-apps/mdtopdf" target="_blank" class="github-icon">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-1.02-2.44c3.4-.38 7-1.72 7-6.96 0-1.55-.545-2.975-1.44-4.15.13-.304.63-1.56-.13-3.25 0 0-1.04-.33-3.4 1.27a11.48 11.48 0 0 0-6.16 0C6.91 2.88 5.87 3.21 5.87 3.21c-.76 1.69-.26 2.946-.13 3.25C5.545 6.025 5 7.45 5 9c0 5.24 3.6 6.58 7 6.96-.27.24-.54.73-.63 1.41-.57.25-2.01.69-2.89-.83-.09-.15-.67-.52-1.54-.51-.82.01-.53.45.01.67.44.26 1.29 1.22 1.45 1.52.25.5 1.04 1.32 2.26 1.16v3.23" />
+                        </svg>
+                    </a>
+                </div>
+                <div class="card-description">
+                    High-quality PDF conversion with custom CSS styling, page numbering, CTA blocks, and media embeds.
+                </div>
+                <div class="tech-badges">
+                    <span class="tech-badge">Python</span>
+                    <span class="tech-badge">WeasyPrint</span>
+                    <span class="tech-badge">CSS Engine</span>
+                    <span class="tech-badge">Design</span>
+                </div>
+                <div class="cli-copy" onclick="copyCmd(event, 'python mdtopdf.py')">
+                    <span>python mdtopdf.py</span>
+                    <span>📑</span>
+                </div>
+                <a href="https://github.com/134ch/bach-porto/tree/main/simple-apps/mdtopdf" class="view-code-link" target="_blank">
+                    View Code →
+                </a>
+            </div>
         </div>
     </section>
 
@@ -433,30 +687,42 @@
 
         <div class="skills-grid">
             <div class="skill-group">
-                <h4>Programming</h4>
+                <h4>Core Languages</h4>
                 <div class="skill-tags">
-                    <span class="skill-tag">Python (Data/Scraping)</span>
-                    <span class="skill-tag">JavaScript / Node.js</span>
+                    <span class="skill-tag">Python</span>
+                    <span class="skill-tag">JavaScript</span>
+                    <span class="skill-tag">Node.js</span>
                     <span class="skill-tag">SQL</span>
-                    <span class="skill-tag">Git / GitHub</span>
+                    <span class="skill-tag">Git</span>
                 </div>
             </div>
             <div class="skill-group">
-                <h4>Cloud & Infra</h4>
+                <h4>Cloud & Infrastructure</h4>
                 <div class="skill-tags">
-                    <span class="skill-tag">Cloudflare Pages/Workers</span>
+                    <span class="skill-tag">Cloudflare Pages</span>
+                    <span class="skill-tag">Cloudflare Workers</span>
                     <span class="skill-tag">Google Cloud</span>
                     <span class="skill-tag">PostHog Analytics</span>
                     <span class="skill-tag">API Integration</span>
                 </div>
             </div>
             <div class="skill-group">
-                <h4>Methodologies</h4>
+                <h4>Software Practices</h4>
                 <div class="skill-tags">
                     <span class="skill-tag">Agile / Scrum</span>
-                    <span class="skill-tag">Sprint Planning</span>
-                    <span class="skill-tag">Technical Documentation</span>
-                    <span class="skill-tag">QA Processes</span>
+                    <span class="skill-tag">Code Reviews</span>
+                    <span class="skill-tag">Testing</span>
+                    <span class="skill-tag">QA (98%+ compliance)</span>
+                    <span class="skill-tag">Documentation</span>
+                </div>
+            </div>
+            <div class="skill-group">
+                <h4>Leadership & Soft Skills</h4>
+                <div class="skill-tags">
+                    <span class="skill-tag">Problem-Solving</span>
+                    <span class="skill-tag">Team Leadership</span>
+                    <span class="skill-tag">Cross-functional Coordination</span>
+                    <span class="skill-tag">Continuous Learning</span>
                 </div>
             </div>
         </div>
@@ -476,13 +742,28 @@
         </div>
     </section>
 
-    <footer>
-        <div class="social-links">
-            <a href="https://github.com/134ch" target="_blank">GITHUB</a>
-            <a href="https://linkedin.com/in/bachwidy" target="_blank">LINKEDIN</a>
-            <a href="mailto:bach.widy@gmail.com">EMAIL</a>
+    <!-- CTA Section -->
+    <section class="cta-section">
+        <h3>Ready to Collaborate?</h3>
+        <p>I am actively seeking a developer role where I can contribute to meaningful projects while growing technical expertise in a professional team environment. Let's talk.</p>
+        <div class="cta-buttons">
+            <a href="mailto:bach.widy@gmail.com" class="btn btn-primary">💬 Get in Touch</a>
+            <a href="Bachtiar_Widyantoro_CV.pdf" target="_blank" class="btn btn-outline">📥 Download CV</a>
         </div>
-        <p>© 2026 Bachtiar Widyantoro | BACHWIDY.SITE</p>
+    </section>
+
+    <button class="back-to-top" id="topBtn" onclick="scrollToTop()">↑</button>
+
+    <footer>
+        <div class="footer-content">
+            <div class="perf-badge">⚡ Deployed on Cloudflare Pages | Ultra-fast CDN</div>
+            <div class="social-links">
+                <a href="https://github.com/134ch" target="_blank">GITHUB</a>
+                <a href="https://linkedin.com/in/bachwidy" target="_blank">LINKEDIN</a>
+                <a href="mailto:bach.widy@gmail.com">EMAIL</a>
+            </div>
+            <p>© 2026 Bachtiar Widyantoro | Jakarta | BACHWIDY.SITE</p>
+        </div>
     </footer>
 
     <script>
@@ -493,6 +774,19 @@
                 t.style.opacity = '1'; setTimeout(() => t.style.opacity = '0', 2000);
             });
         }
+
+        function scrollToTop() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        window.onscroll = function() {
+            const btn = document.getElementById("topBtn");
+            if (document.body.scrollTop > 500 || document.documentElement.scrollTop > 500) {
+                btn.classList.add('show');
+            } else {
+                btn.classList.remove('show');
+            }
+        };
 
         const obs = new IntersectionObserver((es) => {
             es.forEach(e => {
