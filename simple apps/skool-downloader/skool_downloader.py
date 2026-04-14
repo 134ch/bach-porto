@@ -206,10 +206,54 @@ def has_session(driver) -> bool:
 
     return True
 
+
+# Words that identify "forgot password" / secondary buttons to NEVER click
+_SKIP_BTN_WORDS = {"forgot", "reset", "remind", "email me"}
+
+def _find_safe_submit(driver, timeout: int = 5):
+    """
+    Find the first visible, enabled button that is NOT a 'forgot password'
+    style secondary button. Prints what it found for debugging.
+    """
+    # 1. Prefer explicit type=submit
+    try:
+        el = WebDriverWait(driver, timeout).until(
+            EC.element_to_be_clickable((By.CSS_SELECTOR, "button[type='submit']"))
+        )
+        if el.is_displayed():
+            txt = el.text.strip().lower()
+            if not any(w in txt for w in _SKIP_BTN_WORDS):
+                return el
+    except Exception:
+        pass
+
+    # 2. Scan ALL buttons, skip anything that looks like forgot-password
+    try:
+        all_btns = driver.find_elements(By.TAG_NAME, "button")
+        candidates = []
+        for b in all_btns:
+            if not b.is_displayed() or not b.is_enabled():
+                continue
+            txt = b.text.strip().lower()
+            if any(w in txt for w in _SKIP_BTN_WORDS):
+                continue
+            candidates.append(b)
+
+        if candidates:
+            labels = [c.text.strip() or "(no text)" for c in candidates]
+            print(f"  → Found {len(candidates)} submit candidate(s): {labels}")
+            return candidates[0]   # Take the FIRST non-skipped button
+    except Exception:
+        pass
+
+    return None
+
+
 def login_to_skool(driver, email: str, password: str) -> bool:
     """
-    Navigate to Skool login, fill credentials, submit, and wait for a real
-    redirect away from the auth page before declaring success.
+    Handle Skool login. Supports both:
+      - Single-step: email + password visible at once
+      - Multi-step: email → Continue → password → Log In
     """
     print("  → Opening Skool login page…")
     print("    ⚠  Do NOT click or type in the browser window — the script handles it.")
@@ -226,7 +270,7 @@ def login_to_skool(driver, email: str, password: str) -> bool:
         print("  → Session already active.")
         return True
 
-    # ── Find email field ───────────────────────
+    # ── Step 1: Fill email ─────────────────────
     email_input = None
     for how, sel in [
         (By.CSS_SELECTOR, "input[type='email']"),
@@ -241,65 +285,60 @@ def login_to_skool(driver, email: str, password: str) -> bool:
             continue
 
     if not email_input:
-        print("  ✗ Email field not found on login page.")
+        print("  ✗ Email field not found.")
         return False
 
-    # ── Find password field ────────────────────
+    print("  → Entering email…")
+    email_input.clear()
+    email_input.send_keys(email)
+    time.sleep(0.3)
+
+    # ── Check if password is visible NOW (single-step) or hidden (multi-step) ──
+    def password_field_visible():
+        try:
+            el = driver.find_element(By.CSS_SELECTOR, "input[type='password']")
+            return el.is_displayed()
+        except Exception:
+            return False
+
+    if not password_field_visible():
+        # Multi-step: click Continue/Next to reveal the password field
+        print("  → Multi-step form — clicking Continue…")
+        step1_btn = _find_safe_submit(driver, timeout=5)
+        if step1_btn:
+            step1_btn.click()
+            time.sleep(1.5)
+            wait_page_ready(driver, timeout=10)
+        else:
+            print("  ✗ Could not find Continue button on step 1.")
+            return False
+
+    # ── Step 2: Fill password ───────────────────
     pwd_input = None
     try:
-        pwd_input = WebDriverWait(driver, 5).until(
+        pwd_input = WebDriverWait(driver, 10).until(
             EC.visibility_of_element_located((By.CSS_SELECTOR, "input[type='password']"))
         )
     except Exception:
-        print("  ✗ Password field not found on login page.")
+        print("  ✗ Password field not visible after step 1.")
         return False
 
-    # ── Find submit button ─────────────────────
-    # Strategy: try specific selectors first, then fall back to any visible button in a form
-    submit_btn = None
-    button_strategies = [
-        (By.CSS_SELECTOR, "button[type='submit']"),
-        (By.CSS_SELECTOR, "form button"),
-        (By.XPATH, "//button[contains(translate(.,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz'),'log')]"),
-        (By.XPATH, "//button[contains(translate(.,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz'),'sign')]"),
-        (By.XPATH, "//button[contains(translate(.,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz'),'continue')]"),
-        (By.XPATH, "//input[@type='submit']"),
-    ]
-    for how, sel in button_strategies:
-        try:
-            el = WebDriverWait(driver, 3).until(EC.element_to_be_clickable((how, sel)))
-            if el.is_displayed():
-                submit_btn = el
-                break
-        except Exception:
-            continue
-
-    # Last resort: grab all visible buttons and pick the first one
-    if not submit_btn:
-        try:
-            all_buttons = driver.find_elements(By.TAG_NAME, "button")
-            visible = [b for b in all_buttons if b.is_displayed() and b.is_enabled()]
-            if visible:
-                print(f"  ⚠  Using fallback: found {len(visible)} visible button(s): {[b.text.strip() for b in visible]}")
-                submit_btn = visible[-1]  # Usually the last button is submit
-        except Exception:
-            pass
-
-    if not submit_btn:
-        print("  ✗ Submit button not found on login page.")
-        return False
-
-    # ── Fill & submit ──────────────────────────
-    print("  → Filling credentials…")
-    email_input.clear()
-    email_input.send_keys(email)
-    time.sleep(0.4)
+    print("  → Entering password…")
     pwd_input.clear()
     pwd_input.send_keys(password)
     time.sleep(0.4)
+
+    # ── Step 3: Click final submit ──────────────
+    submit_btn = _find_safe_submit(driver, timeout=5)
+    if not submit_btn:
+        print("  ✗ Login submit button not found.")
+        return False
+
+    print(f"  → Clicking '{submit_btn.text.strip() or 'submit'}'…")
     submit_btn.click()
 
     print("  → Waiting for post-login redirect…")
+
 
     # Wait up to 25 s for the URL to leave the login/signin page
     try:
