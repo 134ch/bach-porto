@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bach Widyantoro | AI-Assisted Engineering Portfolio</title>
+    <title>Bach Widyantoro | Full-Stack Developer & Engineer</title>
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -38,9 +38,18 @@
             scroll-behavior: smooth;
         }
 
-        /* --- Animations --- */
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-        @keyframes fadeInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+        /* --- Decorations --- */
+        .blur-orb {
+            position: fixed;
+            width: 400px;
+            height: 400px;
+            border-radius: 50%;
+            background: var(--accent-secondary);
+            filter: blur(150px);
+            opacity: 0.1;
+            z-index: -1;
+            pointer-events: none;
+        }
 
         /* --- Header --- */
         header {
@@ -77,16 +86,15 @@
 
         nav a:hover { color: var(--accent-primary); }
 
-        /* --- Hero --- */
+        /* --- Hero Section --- */
         .hero {
-            height: 100vh;
+            min-height: 100vh;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             text-align: center;
-            padding: 0 5%;
-            animation: fadeIn 1s ease-out;
+            padding: 120px 5% 60px;
         }
 
         .hero-tag {
@@ -111,20 +119,23 @@
         }
 
         .hero h1 span {
-            color: transparent;
-            -webkit-text-stroke: 1px var(--text-main);
+            background: linear-gradient(90deg, var(--accent-primary), var(--accent-success));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
 
         .hero p {
-            max-width: 650px;
+            max-width: 700px;
             color: var(--text-muted);
-            font-size: clamp(1rem, 2vw, 1.25rem);
+            font-size: clamp(1rem, 2vw, 1.2rem);
             margin-bottom: 3rem;
         }
 
         .hero-buttons {
             display: flex;
             gap: 1.5rem;
+            flex-wrap: wrap;
+            justify-content: center;
         }
 
         .btn {
@@ -139,189 +150,164 @@
             gap: 10px;
         }
 
-        .btn-primary {
-            background: var(--accent-primary);
-            color: var(--bg-dark);
-            box-shadow: 0 0 20px rgba(0, 242, 255, 0.3);
-        }
+        .btn-primary { background: var(--accent-primary); color: var(--bg-dark); }
+        .btn-primary:hover { transform: scale(1.05); box-shadow: 0 0 30px rgba(0, 242, 255, 0.4); }
+        
+        .btn-outline { border: 1px solid var(--glass-border); color: var(--text-main); }
+        .btn-outline:hover { background: var(--glass-border); }
 
-        .btn-primary:hover {
-            transform: scale(1.05);
-            box-shadow: 0 0 30px rgba(0, 242, 255, 0.5);
-        }
-
-        .btn-outline {
-            border: 1px solid var(--glass-border);
-            color: var(--text-main);
-        }
-
-        .btn-outline:hover {
-            background: var(--glass-border);
-        }
-
-        /* --- Terminal --- */
-        .terminal-container {
-            width: 100%;
-            max-width: 800px;
-            margin: 4rem auto;
-            background: #0d1117;
-            border-radius: 12px;
-            overflow: hidden;
-            border: 1px solid #30363d;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
-            animation: fadeInUp 1s ease-out 0.3s both;
-        }
-
-        .terminal-header {
-            background: #161b22;
-            padding: 0.8rem 1.2rem;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .dot { width: 12px; height: 12px; border-radius: 50%; }
-        .red { background: #ff5f56; }
-        .yellow { background: #ffbd2e; }
-        .green { background: #27c93f; }
-
-        .terminal-body {
-            padding: 1.5rem;
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.85rem;
-            color: #d1d5da;
-            text-align: left;
-        }
-
-        .terminal-line { margin-bottom: 0.5rem; }
-        .prompt { color: var(--accent-success); }
-        .command { color: #f9826c; }
-
-        /* --- Suite Section --- */
+        /* --- Section Styling --- */
         .section {
-            padding: 8rem 5%;
-            max-width: 1400px;
+            padding: 6rem 5%;
+            max-width: 1200px;
             margin: 0 auto;
         }
 
         .section-header {
-            text-align: center;
-            margin-bottom: 5rem;
+            margin-bottom: 4rem;
         }
 
         .section-header h2 {
-            font-size: 3rem;
+            font-size: 2.5rem;
             font-weight: 800;
             margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 15px;
         }
 
-        .section-header p {
-            color: var(--text-muted);
-            font-size: 1.1rem;
+        .section-header h2::after {
+            content: '';
+            height: 1px;
+            flex-grow: 1;
+            background: var(--glass-border);
         }
 
-        /* --- Interactive Cards --- */
+        /* --- Grid Layouts --- */
         .grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
             gap: 2rem;
         }
 
         .card {
             background: var(--bg-card);
             padding: 2.5rem;
-            border-radius: 20px;
+            border-radius: 16px;
             border: 1px solid var(--glass-border);
             backdrop-filter: blur(10px);
             transition: all 0.4s;
-            position: relative;
-            display: flex;
-            flex-direction: column;
             text-decoration: none;
             color: inherit;
         }
 
         .card:hover {
             border-color: var(--accent-primary);
-            transform: translateY(-10px);
+            transform: translateY(-8px);
             background: rgba(13, 17, 23, 0.9);
-            box-shadow: 0 10px 40px rgba(0, 242, 255, 0.1);
         }
 
-        .status-dot {
+        /* --- Experience & Skills Specific --- */
+        .experience-item {
+            margin-bottom: 3rem;
+            padding-left: 2rem;
+            border-left: 2px solid var(--glass-border);
+            position: relative;
+        }
+
+        .experience-item::before {
+            content: '';
             position: absolute;
-            top: 2rem;
-            right: 2rem;
-            width: 8px;
-            height: 8px;
-            background: var(--accent-success);
+            left: -7px;
+            top: 0;
+            width: 12px;
+            height: 12px;
+            background: var(--accent-primary);
             border-radius: 50%;
-            box-shadow: 0 0 10px var(--accent-success);
         }
 
-        .card-icon {
-            font-size: 2.5rem;
-            margin-bottom: 1.5rem;
-            filter: drop-shadow(0 0 10px rgba(0, 242, 255, 0.2));
-        }
-
-        .card h3 {
-            font-size: 1.5rem;
-            font-weight: 700;
+        .exp-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
             margin-bottom: 1rem;
-            color: var(--text-main);
+            flex-wrap: wrap;
+            gap: 10px;
         }
 
-        .card p {
+        .exp-title { font-size: 1.4rem; font-weight: 700; color: var(--text-main); }
+        .exp-company { color: var(--accent-primary); font-weight: 600; font-size: 1rem; }
+        .exp-date { color: var(--text-muted); font-size: 0.9rem; font-family: 'JetBrains Mono', monospace; }
+
+        .exp-list {
+            list-style: none;
             color: var(--text-muted);
             font-size: 0.95rem;
-            margin-bottom: 2rem;
-            flex-grow: 1;
         }
 
-        .card-footer {
-            margin-top: auto;
-            border-top: 1px solid var(--glass-border);
-            padding-top: 1.5rem;
+        .exp-list li { margin-bottom: 0.8rem; position: relative; padding-left: 1.5rem; }
+        .exp-list li::before { content: '→'; position: absolute; left: 0; color: var(--accent-success); }
+
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 2rem;
         }
 
+        .skill-group h4 {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--accent-primary);
+            margin-bottom: 1.5rem;
+        }
+
+        .skill-tags { display: flex; flex-wrap: wrap; gap: 10px; }
+        .skill-tag {
+            background: rgba(255,255,255,0.05);
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            border: 1px solid var(--glass-border);
+        }
+
+        /* --- Terminal Tool --- */
         .cli-copy {
             background: #161b22;
-            padding: 0.6rem 1rem;
-            border-radius: 6px;
+            padding: 0.8rem 1.2rem;
+            border-radius: 8px;
             font-family: 'JetBrains Mono', monospace;
-            font-size: 0.75rem;
+            font-size: 0.8rem;
             display: flex;
             justify-content: space-between;
             align-items: center;
             color: var(--accent-primary);
             border: 1px solid #30363d;
             cursor: pointer;
-            transition: all 0.2s;
+            margin-top: 1.5rem;
         }
 
-        .cli-copy:hover {
-            border-color: var(--accent-primary);
-            background: #1c2128;
+        .cli-copy:hover { border-color: var(--accent-primary); }
+
+        /* --- Footer --- */
+        footer {
+            padding: 5rem 5%;
+            text-align: center;
+            border-top: 1px solid var(--glass-border);
+            background: rgba(5,7,10,0.5);
         }
 
-        .cli-copy::after {
-            content: "📑";
-            font-size: 1rem;
-            margin-left: 10px;
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 2.5rem;
+            margin: 2rem 0;
         }
 
-        .view-code {
-            display: inline-block;
-            margin-top: 1rem;
-            font-size: 0.8rem;
-            font-weight: 600;
-            color: var(--accent-primary);
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
+        .social-links a { color: var(--text-main); text-decoration: none; font-weight: 600; font-size: 0.9rem; }
+        .social-links a:hover { color: var(--accent-primary); }
 
-        /* --- Toast Notification --- */
+        /* --- Toast --- */
         #toast {
             position: fixed;
             bottom: 2rem;
@@ -337,196 +323,190 @@
             z-index: 2000;
         }
 
-        /* --- Footer --- */
-        footer {
-            padding: 4rem 5%;
-            text-align: center;
-            border-top: 1px solid var(--glass-border);
-            background: #05070a;
-        }
-
-        .social {
-            margin-top: 2rem;
-            display: flex;
-            justify-content: center;
-            gap: 2rem;
-        }
-
-        .social a {
-            color: var(--text-main);
-            text-decoration: none;
-            font-weight: 600;
-            transition: color 0.3s;
-        }
-
-        .social a:hover { color: var(--accent-primary); }
-
         @media (max-width: 768px) {
-            .hero h1 { font-size: 3.5rem; }
-            .grid { grid-template-columns: 1fr; }
-            nav { display: none; }
+            .hero h1 { font-size: 3rem; }
+            .exp-header { flex-direction: column; }
         }
     </style>
 </head>
 <body>
 
     <div id="toast">Command Copied!</div>
+    <div class="blur-orb" style="top: 20%; left: -100px;"></div>
+    <div class="blur-orb" style="bottom: 10%; right: -100px; background: var(--accent-primary);"></div>
 
     <header>
         <div class="logo">BACH.WIDY</div>
         <nav>
+            <a href="#experience">Experience</a>
             <a href="#suite">The Suite</a>
+            <a href="#skills">Skills</a>
             <a href="https://github.com/134ch/bach-porto" target="_blank">Repository</a>
-            <a href="https://linkedin.com/in/bachwidy" target="_blank">Connect</a>
         </nav>
     </header>
 
     <section class="hero">
-        <label class="hero-tag">Available for Hire</label>
-        <h1>Engineering <span>Beyond</span> The Code.</h1>
-        <p>Expertly crafted autonomous content engines and highly-optimized backend utilities designed for the new era of AI.</p>
+        <label class="hero-tag">Jakarta, Indonesia</label>
+        <h1>Bachtiar <span>Widyantoro</span></h1>
+        <p>Full-stack developer with an engineering background. I build production-grade content engines and optimized infrastructure using AI-assisted workflows.</p>
         
         <div class="hero-buttons">
-            <a href="#suite" class="btn btn-primary">The Python Suite</a>
-            <a href="https://github.com/134ch/bach-porto" target="_blank" class="btn btn-outline">View Repo</a>
+            <a href="#suite" class="btn btn-primary">Featured Work</a>
+            <a href="Bachtiar_Widyantoro_CV.pdf" target="_blank" class="btn btn-outline">📥 Download CV (PDF)</a>
+            <a href="mailto:bach.widy@gmail.com" class="btn btn-outline">Get in Touch</a>
+        </div>
+    </section>
+
+    <!-- Professional Experience -->
+    <section id="experience" class="section">
+        <div class="section-header">
+            <h2>Experience</h2>
+        </div>
+        
+        <div class="experience-item">
+            <div class="exp-header">
+                <div>
+                    <div class="exp-title">Founder & CEO</div>
+                    <div class="exp-company">BWGhostwriting</div>
+                </div>
+                <div class="exp-date">Feb 2025 – Present</div>
+            </div>
+            <ul class="exp-list">
+                <li>Built and deployed full-stack web infrastructure using Cloudflare Workers and modern API proxies.</li>
+                <li>Developed multiple Python-based content processing utilities (scrapers, converters, agents) versioned with Git.</li>
+                <li>Implemented real-time analytics dashboards using PostHog to track user engagement and inform decisions.</li>
+            </ul>
         </div>
 
-        <div class="terminal-container">
-            <div class="terminal-header">
-                <div class="dot red"></div>
-                <div class="dot yellow"></div>
-                <div class="dot green"></div>
-                <span style="font-size: 0.7rem; color: #8b949e; margin-left: 10px;">bash: python3</span>
+        <div class="experience-item">
+            <div class="exp-header">
+                <div>
+                    <div class="exp-title">Assistant Manager, Engineering</div>
+                    <div class="exp-company">PT ABO Madalex Indonesia</div>
+                </div>
+                <div class="exp-date">Jan 2019 – Present</div>
             </div>
-            <div class="terminal-body">
-                <div class="terminal-line"><span class="prompt">➜</span> <span class="command">python getblog.py</span> --output blog_html</div>
-                <div class="terminal-line" style="color: #95a5a6;">[15:10:02] Initializing Requests Session...</div>
-                <div class="terminal-line" style="color: var(--accent-primary);">Fetching... 100% [█████████████████] 5/5</div>
-                <div class="terminal-line" style="color: var(--accent-success);">[✔] Process complete. Saved to /blog_html</div>
-                <div class="terminal-line"><span class="prompt">➜</span> <span class="command">_</span></div>
+            <ul class="exp-list">
+                <li>Delivered 15+ client projects on time using Agile methodologies with a 100% on-time delivery rate.</li>
+                <li>Led cross-functional teams through weekly sprint cycles and daily task coordination.</li>
+                <li>Designed QA processes achieving 98% compliance with technical standards.</li>
+            </ul>
+        </div>
+    </section>
+
+    <!-- The Python Suite -->
+    <section id="suite" class="section">
+        <div class="section-header">
+            <h2>The Python Suite</h2>
+            <p>Advanced utilities for content processing and asset auditing.</p>
+        </div>
+
+        <div class="grid">
+            <a href="https://github.com/134ch/bach-porto/tree/main/simple-apps/skool-downloader" class="card" target="_blank">
+                <div class="card-icon">🌀</div>
+                <h3>Skool Downloader</h3>
+                <p>Advanced automation that handles multi-step login and dynamic content scrolling for full community archives.</p>
+                <div class="cli-copy" onclick="copyCmd(event, 'python skool_downloader.py')">python skool_downloader.py</div>
+            </a>
+
+            <a href="https://github.com/134ch/bach-porto/tree/main/simple-apps/getblog" class="card" target="_blank">
+                <div class="card-icon">⚡</div>
+                <h3>Blog Crawler</h3>
+                <p>Fast, session-persistent crawler targeting public articles for archival and text cleaning.</p>
+                <div class="cli-copy" onclick="copyCmd(event, 'python getblog.py')">python getblog.py</div>
+            </a>
+
+            <a href="https://github.com/134ch/bach-porto/tree/main/simple-apps/mdtopdf" class="card" target="_blank">
+                <div class="card-icon">💎</div>
+                <h3>Premium MD to PDF</h3>
+                <p>Converts raw markdown into high-quality PDFs with custom CSS, page numbering, and CTA blocks.</p>
+                <div class="cli-copy" onclick="copyCmd(event, 'python mdtopdf.py')">python mdtopdf.py</div>
+            </a>
+        </div>
+    </section>
+
+    <!-- Technical Skills -->
+    <section id="skills" class="section">
+        <div class="section-header">
+            <h2>Technical Skills</h2>
+        </div>
+
+        <div class="skills-grid">
+            <div class="skill-group">
+                <h4>Programming</h4>
+                <div class="skill-tags">
+                    <span class="skill-tag">Python (Data/Scraping)</span>
+                    <span class="skill-tag">JavaScript / Node.js</span>
+                    <span class="skill-tag">SQL</span>
+                    <span class="skill-tag">Git / GitHub</span>
+                </div>
+            </div>
+            <div class="skill-group">
+                <h4>Cloud & Infra</h4>
+                <div class="skill-tags">
+                    <span class="skill-tag">Cloudflare Pages/Workers</span>
+                    <span class="skill-tag">Google Cloud</span>
+                    <span class="skill-tag">PostHog Analytics</span>
+                    <span class="skill-tag">API Integration</span>
+                </div>
+            </div>
+            <div class="skill-group">
+                <h4>Methodologies</h4>
+                <div class="skill-tags">
+                    <span class="skill-tag">Agile / Scrum</span>
+                    <span class="skill-tag">Sprint Planning</span>
+                    <span class="skill-tag">Technical Documentation</span>
+                    <span class="skill-tag">QA Processes</span>
+                </div>
             </div>
         </div>
     </section>
 
-    <section id="suite" class="section">
+    <!-- Education -->
+    <section class="section">
         <div class="section-header">
-            <h2>The Python Suite</h2>
-            <p>Production-ready utilities built with AI-assisted engineering. Click to explore source.</p>
+            <h2>Education</h2>
         </div>
-
-        <div class="grid">
-            <!-- Skool Downloader -->
-            <a href="https://github.com/134ch/bach-porto/tree/main/simple-apps/skool-downloader" class="card" target="_blank">
-                <div class="status-dot"></div>
-                <div class="card-icon">🌀</div>
-                <h3>Skool Downloader</h3>
-                <p>Advanced automation that handles multi-step login, session persistence, and dynamic content scrolling for full community archives.</p>
-                <div class="card-footer">
-                    <div class="cli-copy" onclick="copyAndIgnore(event, 'python skool_downloader.py')">python skool_downloader.py</div>
-                    <span class="view-code">Explore refactored code →</span>
-                </div>
-            </a>
-
-            <!-- Blog Downloader -->
-            <a href="https://github.com/134ch/bach-porto/tree/main/simple-apps/getblog" class="card" target="_blank">
-                <div class="status-dot"></div>
-                <div class="card-icon">⚡</div>
-                <h3>Blog Crawler</h3>
-                <p>A fast, session-persistent crawler that targets public articles and extracts cleaned content for large-scale training or archival.</p>
-                <div class="card-footer">
-                    <div class="cli-copy" onclick="copyAndIgnore(event, 'python getblog.py')">python getblog.py</div>
-                    <span class="view-code">Explore refactored code →</span>
-                </div>
-            </a>
-
-            <!-- Blog To Markdown -->
-            <a href="https://github.com/134ch/bach-porto/tree/main/simple-apps/html2md-blog" class="card" target="_blank">
-                <div class="status-dot"></div>
-                <div class="card-icon">🤖</div>
-                <h3>HTML2MD-Blog</h3>
-                <p>Specialized converter for AI models. Fixes mojibake (encoding errors) and converts media tags into descriptive text labels.</p>
-                <div class="card-footer">
-                    <div class="cli-copy" onclick="copyAndIgnore(event, 'python html2md_blog.py')">python html2md_blog.py</div>
-                    <span class="view-code">Explore refactored code →</span>
-                </div>
-            </a>
-
-            <!-- vidlink -->
-            <a href="https://github.com/134ch/bach-porto/tree/main/simple-apps/vidlink" class="card" target="_blank">
-                <div class="status-dot"></div>
-                <div class="card-icon">🎬</div>
-                <h3>Vidlink Extractor</h3>
-                <p>Scans massive directories of content to audit and extract video assets (YouTube, Loom, Vimeo) into structured CSV data.</p>
-                <div class="card-footer">
-                    <div class="cli-copy" onclick="copyAndIgnore(event, 'python vidlink.py')">python vidlink.py</div>
-                    <span class="view-code">Explore refactored code →</span>
-                </div>
-            </a>
-
-            <!-- mdtopdf -->
-            <a href="https://github.com/134ch/bach-porto/tree/main/simple-apps/mdtopdf" class="card" target="_blank">
-                <div class="status-dot"></div>
-                <div class="card-icon">💎</div>
-                <h3>MD to Premium PDF</h3>
-                <p>Converts raw markdown into high-quality PDFs with custom CSS themes, page numbering, and interactive call-to-action blocks.</p>
-                <div class="card-footer">
-                    <div class="cli-copy" onclick="copyAndIgnore(event, 'python mdtopdf.py')">python mdtopdf.py</div>
-                    <span class="view-code">Explore refactored code →</span>
-                </div>
-            </a>
-
-            <!-- Combiner -->
-            <a href="https://github.com/134ch/bach-porto/tree/main/simple-apps/md-combiner" class="card" target="_blank">
-                <div class="status-dot"></div>
-                <div class="card-icon">📚</div>
-                <h3>The Combiner</h3>
-                <p>Merges dozens of individual lessons into a single, cohesive master document using intelligent natural sorting.</p>
-                <div class="card-footer">
-                    <div class="cli-copy" onclick="copyAndIgnore(event, 'python md_combiner.py')">python md_combiner.py</div>
-                    <span class="view-code">Explore refactored code →</span>
-                </div>
-            </a>
+        <div class="experience-item">
+            <div class="exp-header">
+                <div class="exp-title">Bachelor of Engineering (Electrical & Electronics)</div>
+                <div class="exp-date">2020</div>
+            </div>
+            <div class="exp-company">Universitas Nasional (UNAS)</div>
         </div>
     </section>
 
     <footer>
-        <p>© 2026 Bachtiar Widyantoro | BACHWIDY.SITE</p>
-        <div class="social">
-            <a href="https://github.com/134ch" target="_blank">GitHub</a>
-            <a href="https://linkedin.com/in/bachwidy" target="_blank">LinkedIn</a>
-            <a href="mailto:bach.widy@gmail.com">Email</a>
+        <div class="social-links">
+            <a href="https://github.com/134ch" target="_blank">GITHUB</a>
+            <a href="https://linkedin.com/in/bachwidy" target="_blank">LINKEDIN</a>
+            <a href="mailto:bach.widy@gmail.com">EMAIL</a>
         </div>
+        <p>© 2026 Bachtiar Widyantoro | BACHWIDY.SITE</p>
     </footer>
 
     <script>
-        function copyAndIgnore(event, text) {
-            event.preventDefault(); // Prevent the parent <a> from firing
-            event.stopPropagation(); // Stop click from bubbling up
-            
+        function copyCmd(event, text) {
+            event.preventDefault(); event.stopPropagation();
             navigator.clipboard.writeText(text).then(() => {
-                const toast = document.getElementById('toast');
-                toast.style.opacity = '1';
-                setTimeout(() => {
-                    toast.style.opacity = '0';
-                }, 2000);
+                const t = document.getElementById('toast');
+                t.style.opacity = '1'; setTimeout(() => t.style.opacity = '0', 2000);
             });
         }
 
-        // Smooth reveal on scroll with Intersection Observer
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.style.opacity = "1";
-                    entry.target.style.transform = "translateY(0)";
+        const obs = new IntersectionObserver((es) => {
+            es.forEach(e => {
+                if (e.isIntersecting) {
+                    e.target.style.opacity = "1";
+                    e.target.style.transform = "translateY(0)";
                 }
             });
         }, { threshold: 0.1 });
 
-        document.querySelectorAll('.card').forEach(card => {
-            card.style.opacity = "0";
-            card.style.transform = "translateY(40px)";
-            card.style.transition = "all 0.6s ease-out";
-            observer.observe(card);
+        document.querySelectorAll('.experience-item, .card').forEach(el => {
+            el.style.opacity = "0"; el.style.transform = "translateY(30px)";
+            el.style.transition = "all 0.6s ease-out";
+            obs.observe(el);
         });
     </script>
 </body>
