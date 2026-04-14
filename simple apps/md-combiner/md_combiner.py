@@ -1,45 +1,52 @@
-import os
-import re
-import tkinter as tk
-from tkinter import filedialog
+#!/usr/bin/env python3
+"""
+md_combiner.py
 
-def natural_sort_key(filename):
+Merges multiple Markdown files into a single master document.
+Supports natural sorting (001, 002, etc.) and custom separators.
+"""
+
+import re
+import argparse
+from pathlib import Path
+from tqdm import tqdm
+
+def natural_sort_key(filename: str):
+    """Sort strings containing numbers in the way humans expect."""
     return [int(c) if c.isdigit() else c.lower() for c in re.split(r'(\d+)', filename)]
 
-def combine_md_files(folder_path, output_filename="combined_output.md", separator="\n\n---\n\n"):
-    md_files = [f for f in os.listdir(folder_path) if f.endswith('.md')]
+def combine_md_files(input_dir, output_file, separator="\n\n---\n\n"):
+    """Reads all MD files in a directory and writes them to a single file."""
+    ipath = Path(input_dir)
+    md_files = sorted([f for f in ipath.glob("*.md")], key=lambda x: natural_sort_key(x.name))
 
     if not md_files:
-        print("No .md files found in the specified folder.")
-        return
+        print(f"Error: No .md files found in '{input_dir}'.")
+        return False
 
-    md_files.sort(key=natural_sort_key)
+    print(f"Combining {len(md_files)} files into '{output_file}'...")
+    
+    with open(output_file, 'w', encoding='utf-8') as outfile:
+        for i, file_path in enumerate(tqdm(md_files, desc="Merging", unit="file")):
+            try:
+                content = file_path.read_text(encoding='utf-8')
+                outfile.write(content)
+                if i < len(md_files) - 1:
+                    outfile.write(separator)
+            except Exception as e:
+                tqdm.write(f"Error reading {file_path.name}: {e}")
 
-    print(f"Found {len(md_files)} .md files. Combining in this order:")
-    for i, f in enumerate(md_files, 1):
-        print(f"  {i:>3}. {f}")
+    return True
 
-    output_path = os.path.join(folder_path, output_filename)
+def main():
+    parser = argparse.ArgumentParser(description="Combine multiple Markdown files into one.")
+    parser.add_argument("--input", default="output_md", help="Directory containing .md files.")
+    parser.add_argument("--output", default="combined_output.md", help="Name of the combined file.")
+    parser.add_argument("--separator", default="\n\n---\n\n", help="Separator between files.")
+    args = parser.parse_args()
 
-    with open(output_path, 'w', encoding='utf-8') as outfile:
-        for i, filename in enumerate(md_files):
-            file_path = os.path.join(folder_path, filename)
-            with open(file_path, 'r', encoding='utf-8') as infile:
-                content = infile.read()
-            outfile.write(content)
-            if i < len(md_files) - 1:
-                outfile.write(separator)
-
-    print(f"\nDone! Combined file saved to:\n  {output_path}")
+    if combine_md_files(args.input, args.output, args.separator):
+        print(f"\nDone! Combined file saved to: {args.output}")
 
 if __name__ == "__main__":
-    root = tk.Tk()
-    root.withdraw()  # Hide the main tkinter window
-
-    print("Opening folder picker...")
-    folder = filedialog.askdirectory(title="Select folder containing .md files")
-
-    if not folder:
-        print("No folder selected. Exiting.")
-    else:
-        combine_md_files(folder)
+    main()
