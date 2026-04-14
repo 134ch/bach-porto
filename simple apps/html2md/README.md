@@ -1,20 +1,32 @@
 # HTML to Markdown Converter (html2md.py)
 
-Converts HTML files into clean Markdown. While it works generally, it contains specific logic to handle Skool-based rich text editors and assets.
+A specialized tool for converting Skool-specific HTML files into clean Markdown documents. It extracts titles, preserves formatting, and captures video embeds from popular platforms.
 
 ## Prerequisites
 ```bash
-pip install beautifulsoup4
+pip install -r requirements.txt
 ```
 
 ## Usage
-1. Run the script: `python html2md.py`
-2. Specify the input folder containing `.html` files (defaults to `input_html`).
-3. Specify the output folder for `.md` files (defaults to `output_md`).
-4. The script will convert all files while preserving formatting and video embeds.
+
+### Basic Usage
+Place your HTML files in a folder named `input_html` and run:
+```bash
+python html2md.py
+```
+
+### Options
+You can specify custom input and output directories:
+```bash
+python html2md.py --input skool_downloads --output classroom_markdown
+```
+
+### Command Line Arguments
+- `--input`: Directory containing HTML files to convert (default: `input_html`).
+- `--output`: Directory where Markdown files will be saved (default: `output_md`).
 
 ## Features
-- **Video Embed Support**: Converts `<iframe>` embeds (YouTube, Loom, etc.) into Markdown video links.
-- **Rich Text Handling**: Correctly processes headers, bold/italic text, lists (ordered/unordered), and blockquotes.
-- **Image Preservation**: Detects and maintains Skool asset image links.
-- **Clean Output**: Uses regex to strip excessive whitespace and normalize formatting.
+- **Skool Optimized**: Targets specific CSS classes (like `skool-editor2`) used by Skool's rich text editor for high-fidelity extraction.
+- **Video Capture**: Automatically identifies and lists embeds from YouTube, Loom, Vimeo, and Wistia.
+- **Wait-Free Conversion**: Processes local files instantly with a visual progress bar.
+- **Clean Formatting**: Recursively processes nested elements (bold, italic, links, lists) to produce readable Markdown.
