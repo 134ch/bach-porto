@@ -41,3 +41,13 @@ python skool_downloader.py --file urls.txt --output my_course_files --headless
 - **Auto-Scroll**: Triggers lazy-loading of images and embedded content.
 - **Headless Support**: Run automation silently in the background.
 - **Error Recovery**: Automatic retries for redirects or slow-loading pages.
+
+---
+
+> [!TIP]
+> **Pro Tip: Link Collection**
+> To quickly gather all classroom or post URLs from a community, use the [Link Grabber](https://chromewebstore.google.com/detail/link-grabber/caodelkhipncidmoebgbbeemedohcdma) Chrome extension. It can extract every link on the page in seconds, which you can then paste into the downloader or save to a `urls.txt` file.
+
+> [!NOTE]
+> **Output Style**
+> The downloaded HTML files are "raw" and may appear visually broken (ugly) when opened in a browser because external stylesheets are not saved. The primary goal of this tool is to reliably capture **all text, structure, and video links** for further conversion (e.g., to Markdown or PDF).
