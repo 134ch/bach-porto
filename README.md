@@ -4,20 +4,20 @@ This repository is a showcase of my development work, featuring a collection of 
 
 ## 🚀 The AI-Enhanced Suite
 
-Inside the [`simple apps/`](simple%20apps/) directory is a collection of professionalized tools focused on content extraction, conversion, and asset management.
+Inside the [`simple-apps/`](simple-apps/) directory is a collection of professionalized tools focused on content extraction, conversion, and asset management.
 
 ### 📥 Downloaders
-- **[Skool Downloader](simple%20apps/skool-downloader/)**: Automates downloading community content. Handles multi-step login and dynamic content.
-- **[Blog Crawler](simple%20apps/getblog/)**: Fetches and cleans articles from the web with session persistence.
+- **[Skool Downloader](simple-apps/skool-downloader/)**: Automates downloading community content. Handles multi-step login and dynamic content.
+- **[Blog Crawler](simple-apps/getblog/)**: Fetches and cleans articles from the web with session persistence.
 
 ### 🔄 Converters
-- **[HTML to Markdown](simple%20apps/html2md/)**: Converts HTML files into clean Markdown, preservation formatting and video embeds.
-- **[Blog to Markdown](simple%20apps/html2md-blog/)**: Specialized for AI-readiness. Fixes text encoding and converts media to descriptive labels.
-- **[Markdown to PDF](simple%20apps/mdtopdf/)**: Generates premium, styled PDFs with page numbers and custom CSS.
+- **[HTML to Markdown](simple-apps/html2md/)**: Converts HTML files into clean Markdown, preservation formatting and video embeds.
+- **[Blog to Markdown](simple-apps/html2md-blog/)**: Specialized for AI-readiness. Fixes text encoding and converts media to descriptive labels.
+- **[Markdown to PDF](simple-apps/mdtopdf/)**: Generates premium, styled PDFs with page numbers and custom CSS.
 
 ### 🛠 Utilities
-- **[Video Link Extractor](simple%20apps/vidlink/)**: Scans content to extract and catalog video links (YouTube, Loom, etc.) into CSV format.
-- **[Markdown Combiner](simple%20apps/md-combiner/)**: Merges multiple Markdown files into a single master document based on natural sorting.
+- **[Video Link Extractor](simple-apps/vidlink/)**: Scans content to extract and catalog video links (YouTube, Loom, etc.) into CSV format.
+- **[Markdown Combiner](simple-apps/md-combiner/)**: Merges multiple Markdown files into a single master document based on natural sorting.
 
 ---
 
