@@ -1,20 +1,43 @@
 # Skool Downloader (skool_downloader.py)
 
-A powerful automation tool to download Skool community posts and lessons as HTML files. It handles authentication and dynamic content loading.
+A professional automation tool to download Skool community posts and lessons as HTML files. It handles authentication, dynamic content loading, and automated batch processing.
 
 ## Prerequisites
 ```bash
-pip install selenium webdriver-manager tqdm
+pip install -r requirements.txt
+```
+
+## Setup
+You can avoid typing your credentials every time by creating a `.env` file in this folder:
+```env
+SKOOL_EMAIL=your@email.com
+SKOOL_PASSWORD=your_password
 ```
 
 ## Usage
-1. Run the script: `python skool_downloader.py`
-2. Enter your Skool credentials (password entry is hidden).
-3. Paste the URLs you want to download (one per line, then an empty line to finish).
-4. The script will log in, navigate to each page, scroll to trigger lazy loading, and save the content.
+
+### Interactive Mode
+Simply run the script and follow the prompts:
+```bash
+python skool_downloader.py
+```
+
+### Automated Batch Mode
+Provide a text file with one URL per line:
+```bash
+python skool_downloader.py --file urls.txt --output my_course_files --headless
+```
+
+### Command Line Arguments
+- `--email`: Your Skool email.
+- `--password`: Your Skool password.
+- `--file`: Path to a text file containing URLs to download.
+- `--output`: Directory where HTML files will be saved (default: `skool_downloads`).
+- `--headless`: Run the browser in the background (no window will open).
+- `--profile`: Path to an existing Chrome user profile to reuse login sessions.
 
 ## Features
-- **Smart Waiting**: Only saves the page once the main content body has fully loaded (checked by character count).
-- **Auto-Scroll**: Automatically scrolls to the bottom to ensure images and late-loading content are captured.
-- **Sanitized Filenames**: Names files based on the actual page title and adds a unique hash to prevent overwriting.
-- **Retry Logic**: Automatically retries if it hits a challenge or redirect.
+- **Smart Waiting**: Verifies content is actually rendered before saving.
+- **Auto-Scroll**: Triggers lazy-loading of images and embedded content.
+- **Headless Support**: Run automation silently in the background.
+- **Error Recovery**: Automatic retries for redirects or slow-loading pages.

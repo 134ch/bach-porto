@@ -2,21 +2,25 @@
 """
 skool_downloader.py
 
-What changed:
-- Wait for CONTENT READY, not just document.readyState.
-- Scroll the page to trigger lazy content, then small idle delay.
-- Retry once on redirect/challenge.
-- Save as .html using sanitized page title + short URL hash.
-
-Requirements:
-    pip install selenium webdriver-manager tqdm
+Enhanced version with:
+- Environment variable support (.env)
+- Command-line arguments (headless mode, output dir, input file)
+- Wait for CONTENT READY logic
+- Automated batch processing
 """
 
-import os, sys, re, time, hashlib, getpass
+import os
+import sys
+import re
+import time
+import hashlib
+import getpass
+import argparse
 from pathlib import Path
 from typing import List, Optional
 
 from tqdm import tqdm
+from dotenv import load_dotenv
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
 from selenium.common.exceptions import WebDriverException, TimeoutException
@@ -25,8 +29,10 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from webdriver_manager.chrome import ChromeDriverManager
 
+# Load environment variables from .env if present
+load_dotenv()
+
 # Heuristic selectors where Skool renders the article body.
-# Add or reorder if you notice variants.
 CONTENT_SELECTORS = [
     "article",
     ".ProseMirror",              # rich editor body
@@ -48,10 +54,13 @@ def sanitize_title_to_filename(title: str, url: str, maxlen: int = 150) -> str:
     short = hashlib.md5(url.encode("utf-8")).hexdigest()[:6]
     return f"{base}__{short}.html" if base else f"page__{short}.html"
 
-def setup_chrome(user_data_dir: Optional[str] = None, window_size=(1400, 900)) -> webdriver.Chrome:
+def setup_chrome(user_data_dir: Optional[str] = None, headless: bool = False, window_size=(1400, 900)) -> webdriver.Chrome:
     options = webdriver.ChromeOptions()
     if user_data_dir:
         options.add_argument(f"--user-data-dir={os.path.abspath(user_data_dir)}")
+    if headless:
+        options.add_argument("--headless=new")
+    
     options.add_argument(f"--window-size={window_size[0]},{window_size[1]}")
     options.add_experimental_option("excludeSwitches", ["enable-automation"])
     options.add_experimental_option("useAutomationExtension", False)
@@ -69,7 +78,10 @@ def setup_chrome(user_data_dir: Optional[str] = None, window_size=(1400, 900)) -
     return driver
 
 def wait_page_ready(driver, timeout=20):
-    WebDriverWait(driver, timeout).until(EC.presence_of_element_located((By.TAG_NAME, "body")))
+    try:
+        WebDriverWait(driver, timeout).until(EC.presence_of_element_located((By.TAG_NAME, "body")))
+    except:
+        pass
     end = time.time() + timeout
     while time.time() < end:
         try:
@@ -89,7 +101,6 @@ def scroll_to_bottom(driver, step=800, pause=0.15, max_steps=40):
         if y == last_y:
             break
         last_y = y
-    # small settle
     time.sleep(0.3)
 
 def content_ready(driver, min_chars=800) -> bool:
@@ -120,7 +131,6 @@ def wait_content_ready(driver, timeout=20, min_chars=800):
 def looks_like_login_or_challenge(url_lower: str, driver) -> bool:
     if any(x in url_lower for x in ["accounts.google.com", "signin", "login"]):
         return True
-    # Common challenge hints in HTML
     try:
         html = driver.page_source.lower()
         if "challenge" in html and "waf" in html:
@@ -153,7 +163,6 @@ def login_to_skool(driver, email: str, password: str) -> bool:
     login_urls = [
         "https://www.skool.com/login",
         "https://www.skool.com/signin",
-        "https://www.skool.com/"
     ]
     last_err = None
     for url in login_urls:
@@ -174,8 +183,7 @@ def login_to_skool(driver, email: str, password: str) -> bool:
                     el = WebDriverWait(driver, 5).until(EC.presence_of_element_located((how, sel)))
                     if el.is_displayed():
                         email_input = el; break
-                except TimeoutException:
-                    continue
+                except: continue
 
             for how, sel in [
                 (By.CSS_SELECTOR, "input[type='password']"),
@@ -186,38 +194,32 @@ def login_to_skool(driver, email: str, password: str) -> bool:
                     el = WebDriverWait(driver, 5).until(EC.presence_of_element_located((how, sel)))
                     if el.is_displayed():
                         pwd_input = el; break
-                except TimeoutException:
-                    continue
+                except: continue
 
             for how, sel in [
                 (By.CSS_SELECTOR, "button[type='submit']"),
                 (By.XPATH, "//button[contains(translate(.,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz'),'log in') or contains(translate(.,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz'),'sign in')]"),
-                (By.XPATH, "//input[@type='submit']"),
             ]:
                 try:
                     el = WebDriverWait(driver, 5).until(EC.element_to_be_clickable((how, sel)))
                     if el.is_displayed():
                         submit_btn = el; break
-                except TimeoutException:
-                    continue
+                except: continue
 
             if not email_input or not pwd_input or not submit_btn:
-                if is_logged_in_to_skool(driver):
-                    return True
-                last_err = "Could not locate login form."
+                if is_logged_in_to_skool(driver): return True
+                last_err = "Could not locate login form fields."
                 continue
 
             email_input.clear(); email_input.send_keys(email)
             pwd_input.clear();   pwd_input.send_keys(password)
             submit_btn.click()
 
-            wait_page_ready(driver, timeout=20)
-            for _ in range(12):
-                if is_logged_in_to_skool(driver):
-                    return True
-                time.sleep(0.6)
+            for _ in range(15):
+                if is_logged_in_to_skool(driver): return True
+                time.sleep(0.8)
 
-            last_err = "Login did not complete."
+            last_err = "Login redirection timeout."
         except Exception as e:
             last_err = str(e)
             continue
@@ -228,7 +230,7 @@ def login_to_skool(driver, email: str, password: str) -> bool:
 def save_current_page_as_html(driver, url: str, out_dir: Path) -> str:
     try:
         title = driver.title or "page"
-    except Exception:
+    except:
         title = "page"
     filename = sanitize_title_to_filename(title, url)
     out_path = out_dir / filename
@@ -236,109 +238,110 @@ def save_current_page_as_html(driver, url: str, out_dir: Path) -> str:
     out_path.write_text(html, encoding="utf-8")
     return str(out_path)
 
-def fetch_and_save(driver, url: str, out_dir: Path, min_chars=800) -> str:
-    """Navigate, wait for content, scroll, idle, then save. Retry once if needed."""
-    for attempt in range(2):  # 0, 1
+def fetch_and_save(driver, url: str, out_dir: Path, min_chars=600) -> str:
+    for attempt in range(2):
         driver.get(url)
         wait_page_ready(driver, timeout=25)
 
-        cur = driver.current_url.lower()
-        if looks_like_login_or_challenge(cur, driver):
+        if looks_like_login_or_challenge(driver.current_url.lower(), driver):
             if attempt == 0:
-                time.sleep(1.2)
+                time.sleep(2)
                 continue
             else:
-                raise RuntimeError(f"Redirected to login or challenge: {cur}")
+                raise RuntimeError(f"Redirected to login/challenge at {driver.current_url}")
 
-        # Trigger lazy loads
         scroll_to_bottom(driver)
-        # Wait for content body to have “enough” text
-        ready = wait_content_ready(driver, timeout=12, min_chars=min_chars)
+        ready = wait_content_ready(driver, timeout=15, min_chars=min_chars)
         if not ready and attempt == 0:
-            # small extra scroll and retry loop
-            scroll_to_bottom(driver, step=1200, pause=0.1, max_steps=20)
-            time.sleep(0.8)
+            scroll_to_bottom(driver, step=1200, pause=0.2)
             continue
 
-        # small settle to allow late images or code blocks to render
-        time.sleep(0.6)
+        time.sleep(0.8)
         return save_current_page_as_html(driver, url, out_dir)
 
-    # If we reach here, both attempts failed
-    raise RuntimeError("Content not ready after retries")
-
-def prompt_nonempty(prompt_text: str) -> str:
-    s = ""
-    while not s.strip():
-        s = input(prompt_text).strip()
-    return s
+    raise RuntimeError("Content failed to load after retries")
 
 def prompt_urls() -> List[str]:
-    print("\nPaste URLs to download. one per line. finish with an empty line.")
+    print("\nPaste URLs (one per line). Finish with an empty line:")
     urls = []
     while True:
         line = input().strip()
-        if not line:
-            break
+        if not line: break
         urls.append(line)
-    if not urls:
-        print("You must provide at least one URL.")
-        return prompt_urls()
     return urls
 
+def load_urls_from_file(file_path: str) -> List[str]:
+    p = Path(file_path)
+    if not p.exists():
+        print(f"Error: URL file {file_path} not found.")
+        return []
+    with open(p, 'r', encoding='utf-8') as f:
+        return [line.strip() for line in f if line.strip()]
+
 def download_batch(driver, urls: List[str], out_dir: str):
-    out_path = Path(out_dir); out_path.mkdir(parents=True, exist_ok=True)
-    with tqdm(total=len(urls), desc="Downloading", unit="page") as bar:
+    out_path = Path(out_dir)
+    out_path.mkdir(parents=True, exist_ok=True)
+    with tqdm(total=len(urls), desc="Job Progress", unit="pg") as bar:
         for url in urls:
-            note = ""
             try:
-                saved = fetch_and_save(driver, url, out_path, min_chars=800)
-                note = f"saved: {Path(saved).name}"
+                saved = fetch_and_save(driver, url, out_path)
+                bar.set_postfix_str(f"OK: {Path(saved).name[:25]}...")
             except Exception as e:
-                # Save whatever DOM we have as a fallback, plus a note
-                try:
-                    fname = f"FAILED__{hashlib.md5(url.encode()).hexdigest()[:6]}.html"
-                    (out_path / fname).write_text(driver.page_source, encoding="utf-8")
-                except Exception:
-                    pass
-                note = f"error: {str(e)[:60]}"
+                bar.set_postfix_str(f"ERR: {str(e)[:25]}")
             finally:
-                bar.set_postfix_str(note[:40]); bar.update(1)
+                bar.update(1)
 
 def main():
-    print("=== Skool Downloader, content-ready HTML, single browser ===\n")
+    parser = argparse.ArgumentParser(description="Skool Article Downloader")
+    parser.add_argument("--email", help="Skool email (or set SKOOL_EMAIL env)")
+    parser.add_argument("--password", help="Skool password (or set SKOOL_PASSWORD env)")
+    parser.add_argument("--file", help="Path to text file containing URLs to download")
+    parser.add_argument("--output", default="skool_downloads", help="Output directory")
+    parser.add_argument("--headless", action="store_true", help="Run Chrome in headless mode")
+    parser.add_argument("--profile", help="Path to existing Chrome user-data-dir")
+    
+    args = parser.parse_args()
 
-    email = prompt_nonempty("Skool email: ")
-    password = getpass.getpass("Skool password (hidden): ")
+    print("=== Skool Downloader Pro ===\n")
 
-    reuse = input("Reuse an existing Chrome profile? (y/N): ").strip().lower() == "y"
-    user_data_dir = None
-    if reuse:
-        user_data_dir = prompt_nonempty("Chrome user-data-dir path: ").strip()
-        print("Close all Chrome windows before continuing.\n")
+    # Resolve credentials
+    email = args.email or os.getenv("SKOOL_EMAIL")
+    if not email:
+        email = input("Skool email: ").strip()
+    
+    password = args.password or os.getenv("SKOOL_PASSWORD")
+    if not password:
+        password = getpass.getpass("Skool password: ")
+
+    # Resolve URLs
+    urls = []
+    if args.file:
+        urls = load_urls_from_file(args.file)
+    
+    if not urls:
+        if args.file:
+            print("No URLs found in file. Falling back to manual entry.")
+        urls = prompt_urls()
+
+    if not urls:
+        print("No URLs provided. Exiting.")
+        return
 
     try:
-        driver = setup_chrome(user_data_dir=user_data_dir)
-    except WebDriverException as e:
-        print("Failed to launch Chrome:", e); sys.exit(1)
-
-    print("\n--- Logging in to Skool ---")
-    if not login_to_skool(driver, email, password):
-        print("Exiting due to failed login.")
-        driver.quit(); sys.exit(2)
-    print("[✔] Successfully logged in to skool.com")
+        driver = setup_chrome(user_data_dir=args.profile, headless=args.headless)
+    except Exception as e:
+        print(f"Failed to launch Chrome: {e}")
+        return
 
     try:
-        while True:
-            urls = prompt_urls()
-            out_dir = input("Output folder [skool_downloads_html]: ").strip() or "skool_downloads_html"
-            print(f"\nSaving {len(urls)} page(s) to: {out_dir}")
-            download_batch(driver, urls, out_dir)
-            print("\n[✔] Finished downloading this batch.")
-            again = input("Download more links? (y/N): ").strip().lower()
-            if again != "y":
-                print("Done. exiting.")
-                break
+        print("\n--- Authenticating ---")
+        if not login_to_skool(driver, email, password):
+            print("Authentication failed.")
+            return
+        
+        print(f"[✔] Logged in. Starting batch of {len(urls)} URLs...")
+        download_batch(driver, urls, args.output)
+        print("\n[✔] All tasks completed.")
     finally:
         driver.quit()
 
