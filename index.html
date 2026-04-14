@@ -1,15 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.    <title>Bach Widyantoro | AI-Assisted Engineering Portfolio</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bach Widyantoro | AI-Assisted Engineering Portfolio</title>
     <!-- Google Fonts -->
-    <link rel=" preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=JetBrains+Mono:wght@400;500&display=swap"
-        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
     <style>
         :root {
             --bg-dark: #05070a;
@@ -30,58 +28,26 @@
 
         body {
             background-color: var(--bg-dark);
-            background-image:
+            background-image: 
                 radial-gradient(circle at 10% 20%, rgba(0, 242, 255, 0.05) 0%, transparent 40%),
                 radial-gradient(circle at 90% 80%, rgba(112, 0, 255, 0.05) 0%, transparent 40%);
             color: var(--text-main);
             font-family: 'Outfit', sans-serif;
             line-height: 1.6;
             overflow-x: hidden;
+            scroll-behavior: smooth;
         }
 
         /* --- Animations --- */
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-            }
-
-            to {
-                opacity: 1;
-            }
-        }
-
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        @keyframes float {
-            0% {
-                transform: translateY(0px);
-            }
-
-            50% {
-                transform: translateY(-10px);
-            }
-
-            100% {
-                transform: translateY(0px);
-            }
-        }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
 
         /* --- Header --- */
         header {
             position: fixed;
             top: 0;
             width: 100%;
-            padding: 2rem 5%;
+            padding: 1.5rem 5%;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -109,9 +75,7 @@
             transition: color 0.3s;
         }
 
-        nav a:hover {
-            color: var(--accent-primary);
-        }
+        nav a:hover { color: var(--accent-primary); }
 
         /* --- Hero --- */
         .hero {
@@ -170,6 +134,9 @@
             text-decoration: none;
             transition: all 0.3s;
             cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
         }
 
         .btn-primary {
@@ -192,7 +159,7 @@
             background: var(--glass-border);
         }
 
-        /* --- Terminal / Console UI --- */
+        /* --- Terminal --- */
         .terminal-container {
             width: 100%;
             max-width: 800px;
@@ -201,7 +168,7 @@
             border-radius: 12px;
             overflow: hidden;
             border: 1px solid #30363d;
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
             animation: fadeInUp 1s ease-out 0.3s both;
         }
 
@@ -213,42 +180,22 @@
             gap: 8px;
         }
 
-        .dot {
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-        }
-
-        .red {
-            background: #ff5f56;
-        }
-
-        .yellow {
-            background: #ffbd2e;
-        }
-
-        .green {
-            background: #27c93f;
-        }
+        .dot { width: 12px; height: 12px; border-radius: 50%; }
+        .red { background: #ff5f56; }
+        .yellow { background: #ffbd2e; }
+        .green { background: #27c93f; }
 
         .terminal-body {
             padding: 1.5rem;
             font-family: 'JetBrains Mono', monospace;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             color: #d1d5da;
+            text-align: left;
         }
 
-        .terminal-line {
-            margin-bottom: 0.5rem;
-        }
-
-        .prompt {
-            color: var(--accent-success);
-        }
-
-        .command {
-            color: #f9826c;
-        }
+        .terminal-line { margin-bottom: 0.5rem; }
+        .prompt { color: var(--accent-success); }
+        .command { color: #f9826c; }
 
         /* --- Suite Section --- */
         .section {
@@ -273,10 +220,10 @@
             font-size: 1.1rem;
         }
 
-        /* --- Cards --- */
+        /* --- Interactive Cards --- */
         .grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
             gap: 2rem;
         }
 
@@ -288,7 +235,10 @@
             backdrop-filter: blur(10px);
             transition: all 0.4s;
             position: relative;
-            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            text-decoration: none;
+            color: inherit;
         }
 
         .card:hover {
@@ -298,10 +248,21 @@
             box-shadow: 0 10px 40px rgba(0, 242, 255, 0.1);
         }
 
+        .status-dot {
+            position: absolute;
+            top: 2rem;
+            right: 2rem;
+            width: 8px;
+            height: 8px;
+            background: var(--accent-success);
+            border-radius: 50%;
+            box-shadow: 0 0 10px var(--accent-success);
+        }
+
         .card-icon {
             font-size: 2.5rem;
             margin-bottom: 1.5rem;
-            filter: drop-shadow(0 0 10px rgba(0, 242, 255, 0.3));
+            filter: drop-shadow(0 0 10px rgba(0, 242, 255, 0.2));
         }
 
         .card h3 {
@@ -315,23 +276,65 @@
             color: var(--text-muted);
             font-size: 0.95rem;
             margin-bottom: 2rem;
-            min-height: 4.5rem;
+            flex-grow: 1;
         }
 
-        .card-stats {
+        .card-footer {
+            margin-top: auto;
+            border-top: 1px solid var(--glass-border);
+            padding-top: 1.5rem;
+        }
+
+        .cli-copy {
+            background: #161b22;
+            padding: 0.6rem 1rem;
+            border-radius: 6px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border-top: 1px solid var(--glass-border);
-            padding-top: 1.5rem;
+            color: var(--accent-primary);
+            border: 1px solid #30363d;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .cli-copy:hover {
+            border-color: var(--accent-primary);
+            background: #1c2128;
+        }
+
+        .cli-copy::after {
+            content: "📑";
+            font-size: 1rem;
+            margin-left: 10px;
+        }
+
+        .view-code {
+            display: inline-block;
+            margin-top: 1rem;
             font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--accent-primary);
             text-transform: uppercase;
             letter-spacing: 1px;
         }
 
-        .tag {
-            color: var(--accent-primary);
+        /* --- Toast Notification --- */
+        #toast {
+            position: fixed;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--accent-success);
+            color: var(--bg-dark);
+            padding: 0.8rem 2rem;
+            border-radius: 50px;
             font-weight: 600;
+            opacity: 0;
+            transition: opacity 0.3s;
+            z-index: 2000;
         }
 
         /* --- Footer --- */
@@ -340,11 +343,6 @@
             text-align: center;
             border-top: 1px solid var(--glass-border);
             background: #05070a;
-        }
-
-        footer p {
-            color: var(--text-muted);
-            font-size: 0.9rem;
         }
 
         .social {
@@ -361,55 +359,36 @@
             transition: color 0.3s;
         }
 
-        .social a:hover {
-            color: var(--accent-primary);
-        }
+        .social a:hover { color: var(--accent-primary); }
 
         @media (max-width: 768px) {
-            .hero h1 {
-                font-size: 3.5rem;
-            }
-
-            .hero-buttons {
-                flex-direction: column;
-                width: 100%;
-            }
-
-            .btn {
-                text-align: center;
-            }
-
-            .section {
-                padding: 4rem 5%;
-            }
-
-            nav {
-                display: none;
-            }
+            .hero h1 { font-size: 3.5rem; }
+            .grid { grid-template-columns: 1fr; }
+            nav { display: none; }
         }
     </style>
 </head>
-
 <body>
+
+    <div id="toast">Command Copied!</div>
 
     <header>
         <div class="logo">BACH.WIDY</div>
         <nav>
             <a href="#suite">The Suite</a>
-            <a href="#about">Philosophy</a>
             <a href="https://github.com/134ch/bach-porto" target="_blank">Repository</a>
+            <a href="https://linkedin.com/in/bachwidy" target="_blank">Connect</a>
         </nav>
     </header>
 
     <section class="hero">
         <label class="hero-tag">Available for Hire</label>
         <h1>Engineering <span>Beyond</span> The Code.</h1>
-        <p>I build autonomous content engines and highly-optimized backend utilities using AI-assisted engineering
-            workflows.</p>
-
+        <p>Expertly crafted autonomous content engines and highly-optimized backend utilities designed for the new era of AI.</p>
+        
         <div class="hero-buttons">
-            <a href="#suite" class="btn btn-primary">Explore My Tools</a>
-            <a href="https://linkedin.com/in/bachwidy" class="btn btn-outline">Let's Connect</a>
+            <a href="#suite" class="btn btn-primary">The Python Suite</a>
+            <a href="https://github.com/134ch/bach-porto" target="_blank" class="btn btn-outline">View Repo</a>
         </div>
 
         <div class="terminal-container">
@@ -419,19 +398,11 @@
                 <div class="dot green"></div>
                 <span style="font-size: 0.7rem; color: #8b949e; margin-left: 10px;">bash: python3</span>
             </div>
-            <div class="terminal-body" id="typewriter">
-                <div class="terminal-line"><span class="prompt">➜</span> <span class="command">python
-                        skool_downloader.py</span> --batch input.txt</div>
-                <div class="terminal-line" style="color: #95a5a6;">[14:30:02] Authenticating with Skool...</div>
-                <div class="terminal-line" style="color: var(--accent-success);">[✔] Session verified. Multi-step
-                    detected.</div>
-                <div class="terminal-line" style="color: #95a5a6;">[14:30:05] Starting download (9 URLs)...</div>
-                <div class="terminal-line"><span class="prompt">➜</span> <span class="command">python html2md.py</span>
-                    --input downloads</div>
-                <div class="terminal-line" style="color: var(--accent-primary);">Converting... 100% [█████████████████]
-                    9/9</div>
-                <div class="terminal-line" style="color: var(--accent-success);">[✔] Done. Your AI-ready markdown is
-                    ready.</div>
+            <div class="terminal-body">
+                <div class="terminal-line"><span class="prompt">➜</span> <span class="command">python getblog.py</span> --output blog_html</div>
+                <div class="terminal-line" style="color: #95a5a6;">[15:10:02] Initializing Requests Session...</div>
+                <div class="terminal-line" style="color: var(--accent-primary);">Fetching... 100% [█████████████████] 5/5</div>
+                <div class="terminal-line" style="color: var(--accent-success);">[✔] Process complete. Saved to /blog_html</div>
                 <div class="terminal-line"><span class="prompt">➜</span> <span class="command">_</span></div>
             </div>
         </div>
@@ -440,93 +411,81 @@
     <section id="suite" class="section">
         <div class="section-header">
             <h2>The Python Suite</h2>
-            <p>7 professionalized utilities for data extraction, processing, and distribution.</p>
+            <p>Production-ready utilities built with AI-assisted engineering. Click to explore source.</p>
         </div>
 
         <div class="grid">
             <!-- Skool Downloader -->
-            <div class="card">
+            <a href="https://github.com/134ch/bach-porto/tree/main/simple%20apps/skool-downloader" class="card" target="_blank">
+                <div class="status-dot"></div>
                 <div class="card-icon">🌀</div>
                 <h3>Skool Downloader</h3>
-                <p>Advanced automation that handles multi-step login, session persistence, and dynamic content scrolling
-                    for full community archives.</p>
-                <div class="card-stats">
-                    <span class="tag">BACKEND</span>
-                    <span>Selenium + WebDriver</span>
+                <p>Advanced automation that handles multi-step login, session persistence, and dynamic content scrolling for full community archives.</p>
+                <div class="card-footer">
+                    <div class="cli-copy" onclick="copyAndIgnore(event, 'python skool_downloader.py')">python skool_downloader.py</div>
+                    <span class="view-code">Explore refactored code →</span>
                 </div>
-            </div>
+            </a>
 
             <!-- Blog Downloader -->
-            <div class="card">
+            <a href="https://github.com/134ch/bach-porto/tree/main/simple%20apps/getblog" class="card" target="_blank">
+                <div class="status-dot"></div>
                 <div class="card-icon">⚡</div>
                 <h3>Blog Crawler</h3>
-                <p>A fast, session-persistent crawler that targets public articles and extracts cleaned content for
-                    large-scale training or archival.</p>
-                <div class="card-stats">
-                    <span class="tag">AUTOMATION</span>
-                    <span>Requests + BS4</span>
+                <p>A fast, session-persistent crawler that targets public articles and extracts cleaned content for large-scale training or archival.</p>
+                <div class="card-footer">
+                    <div class="cli-copy" onclick="copyAndIgnore(event, 'python getblog.py')">python getblog.py</div>
+                    <span class="view-code">Explore refactored code →</span>
                 </div>
-            </div>
+            </a>
 
             <!-- Blog To Markdown -->
-            <div class="card">
+            <a href="https://github.com/134ch/bach-porto/tree/main/simple%20apps/html2md-blog" class="card" target="_blank">
+                <div class="status-dot"></div>
                 <div class="card-icon">🤖</div>
                 <h3>HTML2MD-Blog</h3>
-                <p>Specialized converter for AI models. Fixes mojibake (encoding errors) and converts media tags into
-                    descriptive text labels.</p>
-                <div class="card-stats">
-                    <span class="tag">AI READY</span>
-                    <span>Markdownify</span>
+                <p>Specialized converter for AI models. Fixes mojibake (encoding errors) and converts media tags into descriptive text labels.</p>
+                <div class="card-footer">
+                    <div class="cli-copy" onclick="copyAndIgnore(event, 'python html2md_blog.py')">python html2md_blog.py</div>
+                    <span class="view-code">Explore refactored code →</span>
                 </div>
-            </div>
+            </a>
 
             <!-- vidlink -->
-            <div class="card">
+            <a href="https://github.com/134ch/bach-porto/tree/main/simple%20apps/vidlink" class="card" target="_blank">
+                <div class="status-dot"></div>
                 <div class="card-icon">🎬</div>
                 <h3>Vidlink Extractor</h3>
-                <p>Scans massive directories of content to audit and extract video assets (YouTube, Loom, Vimeo) into
-                    structured data.</p>
-                <div class="card-stats">
-                    <span class="tag">AUDIT</span>
-                    <span>Regex + CSV</span>
+                <p>Scans massive directories of content to audit and extract video assets (YouTube, Loom, Vimeo) into structured CSV data.</p>
+                <div class="card-footer">
+                    <div class="cli-copy" onclick="copyAndIgnore(event, 'python vidlink.py')">python vidlink.py</div>
+                    <span class="view-code">Explore refactored code →</span>
                 </div>
-            </div>
+            </a>
 
             <!-- mdtopdf -->
-            <div class="card">
+            <a href="https://github.com/134ch/bach-porto/tree/main/simple%20apps/mdtopdf" class="card" target="_blank">
+                <div class="status-dot"></div>
                 <div class="card-icon">💎</div>
                 <h3>MD to Premium PDF</h3>
-                <p>Converts raw markdown into high-quality PDFs with custom CSS, page numbers, and interactive
-                    call-to-action blocks.</p>
-                <div class="card-stats">
-                    <span class="tag">DISTRIBUTION</span>
-                    <span>WeasyPrint</span>
+                <p>Converts raw markdown into high-quality PDFs with custom CSS themes, page numbering, and interactive call-to-action blocks.</p>
+                <div class="card-footer">
+                    <div class="cli-copy" onclick="copyAndIgnore(event, 'python mdtopdf.py')">python mdtopdf.py</div>
+                    <span class="view-code">Explore refactored code →</span>
                 </div>
-            </div>
+            </a>
 
             <!-- Combiner -->
-            <div class="card">
+            <a href="https://github.com/134ch/bach-porto/tree/main/simple%20apps/md-combiner" class="card" target="_blank">
+                <div class="status-dot"></div>
                 <div class="card-icon">📚</div>
                 <h3>The Combiner</h3>
-                <p>Naturally sorts and merges dozens of individual lessons into a single, cohesive master document or
-                    e-book.</p>
-                <div class="card-stats">
-                    <span class="tag">WORKFLOW</span>
-                    <span>Natural Sort</span>
+                <p>Merges dozens of individual lessons into a single, cohesive master document using intelligent natural sorting.</p>
+                <div class="card-footer">
+                    <div class="cli-copy" onclick="copyAndIgnore(event, 'python md_combiner.py')">python md_combiner.py</div>
+                    <span class="view-code">Explore refactored code →</span>
                 </div>
-            </div>
-        </div>
-    </section>
-
-    <section id="about" class="section" style="background: rgba(0, 242, 255, 0.02); border-radius: 40px;">
-        <div class="section-header">
-            <h2>Workflow Philosophy</h2>
-            <p>Precise engineering in an AI-native world.</p>
-        </div>
-        <div style="max-width: 800px; margin: 0 auto; text-align: center; color: var(--text-muted); font-size: 1.1rem;">
-            <p>I believe in "Standardized Robustness." Every tool in this suite follows the same engineering pattern:
-                explicit CLI arguments, environment variable security, comprehensive error handling, and visual feedback
-                for the user. Built alongside AI, refined by a human.</p>
+            </a>
         </div>
     </section>
 
@@ -540,7 +499,20 @@
     </footer>
 
     <script>
-        // Smooth reveal on scroll
+        function copyAndIgnore(event, text) {
+            event.preventDefault(); // Prevent the parent <a> from firing
+            event.stopPropagation(); // Stop click from bubbling up
+            
+            navigator.clipboard.writeText(text).then(() => {
+                const toast = document.getElementById('toast');
+                toast.style.opacity = '1';
+                setTimeout(() => {
+                    toast.style.opacity = '0';
+                }, 2000);
+            });
+        }
+
+        // Smooth reveal on scroll with Intersection Observer
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
@@ -554,29 +526,8 @@
             card.style.opacity = "0";
             card.style.transform = "translateY(40px)";
             card.style.transition = "all 0.6s ease-out";
-
-        });
-        });
-
-        // Stagger animations on scroll
-        const observerOptions = {
-            threshold: 0.1,
-            rootMargin: '0px 0px -50px 0px'
-        };
-
-        const observer = new IntersectionObserver(function (entries) {
-            entries.forEach((entry, index) => {
-                if (entry.isIntersecting) {
-                    entry.target.style.animation = `slide-in 0.6s ease-out ${index * 0.1}s both`;
-                    observer.unobserve(entry.target);
-                }
-            });
-        }, observerOptions);
-
-        document.querySelectorAll('.project-card').forEach(card => {
             observer.observe(card);
         });
     </script>
 </body>
-
 </html>
