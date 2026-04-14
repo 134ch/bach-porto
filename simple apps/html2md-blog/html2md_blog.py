@@ -2,7 +2,7 @@
 """
 html2md_blog.py
 
-Specialized HTML to Markdown converter for blog articles (PGA specifically).
+Specialized HTML to Markdown converter for blog articles.
 Features:
 - Fixes specific text encoding issues (mojibake).
 - Converts images and videos into descriptive text labels with URLs.
@@ -85,7 +85,7 @@ def extract_article_html(html: str) -> str:
     """Extract and clean the main blog article HTML."""
     soup = BeautifulSoup(html, "html.parser")
 
-    # Target PGA blog selectors
+    # Target blog selectors
     article_richtext = soup.select_one("article .blogstyling") or soup.select_one(".blogstyling")
     
     if article_richtext is None:
@@ -126,7 +126,7 @@ def html_to_markdown(html: str) -> str:
 def main():
     parser = argparse.ArgumentParser(description="Specialized Blog HTML to Markdown converter.")
     parser.add_argument("--input", default="blog_html", help="Input directory of HTML files.")
-    parser.add_argument("--output", default="pga_markdown", help="Output directory for MD files.")
+    parser.add_argument("--output", default="blog_markdown", help="Output directory for MD files.")
     args = parser.parse_args()
 
     input_path = Path(args.input)
