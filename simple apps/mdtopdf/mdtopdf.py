@@ -184,9 +184,12 @@ def main():
     ipath = Path(args.input)
     opath = Path(args.output)
     
+    # Create input directory and a sample file if it doesn't exist
     if not ipath.exists():
-        print(f"Error: Input directory '{args.input}' not found.")
-        return
+        ipath.mkdir(parents=True, exist_ok=True)
+        sample = ipath / "001_sample.md"
+        sample.write_text("# Sample Page\n\nThis is a sample markdown file.\n\n[Video: YouTube](https://youtube.com)", encoding="utf-8")
+        print(f"Created input directory '{args.input}' with a sample file.")
 
     opath.mkdir(parents=True, exist_ok=True)
     md_files = sorted(list(ipath.glob("*.md")))

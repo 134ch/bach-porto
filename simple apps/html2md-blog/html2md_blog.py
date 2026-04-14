@@ -132,9 +132,12 @@ def main():
     input_path = Path(args.input)
     output_path = Path(args.output)
 
+    # Create input directory and a sample file if it doesn't exist
     if not input_path.exists():
-        print(f"Error: Input directory '{args.input}' not found.")
-        sys.exit(1)
+        input_path.mkdir(parents=True, exist_ok=True)
+        sample = input_path / "sample_blog.html"
+        sample.write_text("<article><div class='blogstyling'><h1>Blog Title</h1><p>Content</p></div></article>", encoding="utf-8")
+        print(f"Created input directory '{args.input}' with a sample file.")
 
     output_path.mkdir(parents=True, exist_ok=True)
     html_files = sorted(input_path.glob("*.html"))

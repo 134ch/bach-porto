@@ -158,9 +158,12 @@ def main():
     input_path = Path(args.input)
     output_path = Path(args.output)
     
+    # Create input directory and a sample file if it doesn't exist
     if not input_path.exists():
-        print(f"Error: Input directory '{args.input}' not found.")
-        return
+        input_path.mkdir(parents=True, exist_ok=True)
+        sample_file = input_path / "sample.html"
+        sample_file.write_text("<h1>Sample Title</h1><p>Hello Skool!</p>", encoding="utf-8")
+        print(f"Created input directory '{args.input}' with a sample file.")
 
     output_path.mkdir(parents=True, exist_ok=True)
     html_files = list(input_path.glob("*.html"))

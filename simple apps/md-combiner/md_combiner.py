@@ -45,6 +45,13 @@ def main():
     parser.add_argument("--separator", default="\n\n---\n\n", help="Separator between files.")
     args = parser.parse_args()
 
+    ipath = Path(args.input)
+    if not ipath.exists():
+        ipath.mkdir(parents=True, exist_ok=True)
+        (ipath / "001_intro.md").write_text("# Intro\n\nWelcome.", encoding="utf-8")
+        (ipath / "002_lesson.md").write_text("# Lesson 1\n\nContent here.", encoding="utf-8")
+        print(f"Created input directory '{args.input}' with sample files.")
+
     if combine_md_files(args.input, args.output, args.separator):
         print(f"\nDone! Combined file saved to: {args.output}")
 

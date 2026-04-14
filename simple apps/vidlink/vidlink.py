@@ -108,8 +108,10 @@ def main():
 
     ipath = Path(args.input)
     if not ipath.exists():
-        print(f"Error: Input directory '{args.input}' not found.")
-        return
+        ipath.mkdir(parents=True, exist_ok=True)
+        sample = ipath / "001_sample.md"
+        sample.write_text("# Sample Page\n\n[Video: YouTube](https://youtube.com)", encoding="utf-8")
+        print(f"Created input directory '{args.input}' with a sample file.")
 
     data = process_files(args.input)
     if not data:
