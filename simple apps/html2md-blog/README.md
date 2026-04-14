@@ -1,0 +1,31 @@
+# Blog to Markdown Converter (html2md_blog.py)
+
+A specialized tool for converting blog articles (optimized for PGA) into an LLM-friendly Markdown format.
+
+## Prerequisites
+```bash
+pip install -r requirements.txt
+```
+
+## Usage
+
+### Basic Usage
+Place your HTML files (e.g., from `getblog.py`) in a folder named `pga_articles` and run:
+```bash
+python html2md_blog.py
+```
+
+### Options
+Specify custom paths via command line:
+```bash
+python html2md_blog.py --input my_blogs --output my_markdown
+```
+
+### Command Line Arguments
+- `--input`: Source directory of HTML files (default: `pga_articles`).
+- `--output`: Destination directory for Markdown files (default: `pga_markdown`).
+
+## Special Features
+- **LLM-Ready Output**: Instead of Markdown image tags, it converts images and videos into descriptive text labels like `"Action Shoot" (URL = https://...)`. This is often more useful for feeding content into AI models.
+- **Encoding Fixes**: Automatically detects and repairs "mojibake" (corrupted characters like `â€™` instead of `'`).
+- **Clean Structure**: Strips scripts, styles, and decorative elements to focus strictly on the article content.
