@@ -23,7 +23,7 @@ python getblog.py --file my_urls.txt --output pga_blogs --delay 2.0
 
 ### Command Line Arguments
 - `--file`: Path to the text file containing URLs (default: `urls.txt`).
-- `--output`: Directory to save the downloaded articles (default: `downloaded_blogs`).
+- `--output`: Directory to save the downloaded articles (default: `blog_html`).
 - `--delay`: Delay between requests in seconds to be polite to the server (default: `1.0`).
 
 ## Features

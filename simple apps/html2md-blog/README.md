@@ -10,7 +10,7 @@ pip install -r requirements.txt
 ## Usage
 
 ### Basic Usage
-Place your HTML files (e.g., from `getblog.py`) in a folder named `pga_articles` and run:
+Place your HTML files (e.g., from `getblog.py`) in a folder named `blog_html` and run:
 ```bash
 python html2md_blog.py
 ```
@@ -22,7 +22,7 @@ python html2md_blog.py --input my_blogs --output my_markdown
 ```
 
 ### Command Line Arguments
-- `--input`: Source directory of HTML files (default: `pga_articles`).
+- `--input`: Source directory of HTML files (default: `blog_html`).
 - `--output`: Destination directory for Markdown files (default: `pga_markdown`).
 
 ## Special Features

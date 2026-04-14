@@ -100,7 +100,7 @@ def download_blog(url, session, output_dir, index, total):
 def main():
     parser = argparse.ArgumentParser(description="Download blog articles from a list of URLs.")
     parser.add_argument("--file", default="urls.txt", help="Path to the text file containing URLs.")
-    parser.add_argument("--output", default="downloaded_blogs", help="Directory to save the downloaded articles.")
+    parser.add_argument("--output", default="blog_html", help="Directory to save the downloaded articles.")
     parser.add_argument("--delay", type=float, default=1.0, help="Delay between requests in seconds.")
     
     args = parser.parse_args()

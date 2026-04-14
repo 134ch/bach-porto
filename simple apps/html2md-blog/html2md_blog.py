@@ -125,7 +125,7 @@ def html_to_markdown(html: str) -> str:
 
 def main():
     parser = argparse.ArgumentParser(description="Specialized Blog HTML to Markdown converter.")
-    parser.add_argument("--input", default="pga_articles", help="Input directory of HTML files.")
+    parser.add_argument("--input", default="blog_html", help="Input directory of HTML files.")
     parser.add_argument("--output", default="pga_markdown", help="Output directory for MD files.")
     args = parser.parse_args()
 
