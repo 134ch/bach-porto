@@ -1,227 +1,132 @@
+#!/usr/bin/env python3
+"""
+vidlink.py
+
+Scans a directory of Markdown files to extract and catalog video links
+(YouTube, Loom, Vimeo, etc.) into a single CSV or text file.
+"""
+
 import os
 import re
 import csv
+import argparse
 from pathlib import Path
+from tqdm import tqdm
 
-def extract_module_number(filename):
-    """Extract module number from filename"""
-    # Try to find a number at the start of the filename
-    # Examples: "3. Step 1 Call Intro.md", "Module 4.md", "7 - Introduction.md"
+def extract_module_number(filename: str):
+    """Extract the numeric index from the start of the filename."""
     match = re.match(r'^(\d+)', filename)
     if match:
         return int(match.group(1))
     return None
 
-def extract_first_heading(md_content):
-    """Extract the first # heading from markdown content"""
-    lines = md_content.split('\n')
-    for line in lines:
+def extract_first_heading(md_content: str) -> str:
+    """Find the first # heading in the file."""
+    for line in md_content.splitlines():
         line = line.strip()
-        # Match heading that starts with exactly one #
-        if re.match(r'^#\s+(.+)', line):
-            # Remove the # and any extra whitespace
-            heading = re.sub(r'^#\s+', '', line).strip()
-            return heading
+        if line.startswith("# "):
+            return line[2:].strip()
     return "No Title"
 
-def detect_video_source(url):
-    """Detect video source from URL"""
-    url_lower = url.lower()
-    
-    if 'youtube.com' in url_lower or 'youtu.be' in url_lower:
-        return 'YouTube'
-    elif 'loom.com' in url_lower:
-        return 'Loom'
-    elif 'vimeo.com' in url_lower:
-        return 'Vimeo'
-    elif 'wistia.com' in url_lower or 'wistia.net' in url_lower:
-        return 'Wistia'
-    elif 'vidyard.com' in url_lower:
-        return 'Vidyard'
-    elif 'streamable.com' in url_lower:
-        return 'Streamable'
-    else:
-        return 'Other'
+def detect_video_source(url: str) -> str:
+    """Identify the platform host for a given URL."""
+    u = url.lower()
+    if 'youtube.com' in u or 'youtu.be' in u: return 'YouTube'
+    if 'loom.com' in u: return 'Loom'
+    if 'vimeo.com' in u: return 'Vimeo'
+    if 'wistia' in u: return 'Wistia'
+    if 'vidyard' in u: return 'Vidyard'
+    if 'streamable' in u: return 'Streamable'
+    return 'Other'
 
-def extract_video_links(md_content):
-    """Extract all video links from markdown content"""
-    video_links = []
+def extract_video_links(md_content: str) -> list:
+    """Extract all video links using multiple regex patterns."""
+    links = []
     
-    # Pattern 1: [Video: Platform](URL) or [Video](URL)
-    pattern1 = r'\[Video:?\s*[^\]]*\]\(([^\)]+)\)'
-    matches1 = re.findall(pattern1, md_content)
-    video_links.extend(matches1)
+    # 1. Custom [Video: ...](URL) patterns
+    links.extend(re.findall(r'\[Video:?\s*[^\]]*\]\(([^\)]+)\)', md_content))
     
-    # Pattern 2: Direct URLs that contain video platforms
-    # Look for URLs in markdown links that might be videos
-    pattern2 = r'\[([^\]]+)\]\((https?://[^\)]+(?:youtube|loom|vimeo|wistia)[^\)]+)\)'
-    matches2 = re.findall(pattern2, md_content)
-    video_links.extend([url for text, url in matches2])
+    # 2. Markdown links that reference video domains
+    domains = r'youtube\.com|youtu\.be|loom\.com|vimeo\.com|wistia|vidyard|streamable'
+    links.extend(re.findall(rf'\[[^\]]+\]\((https?://[^\)]*(?:{domains})[^\)]+)\)', md_content))
     
-    # Pattern 3: Bare URLs (if any) containing video platforms
-    pattern3 = r'(https?://(?:www\.)?(?:youtube\.com|youtu\.be|loom\.com|vimeo\.com|wistia\.com|wistia\.net)/[^\s\)]+)'
-    matches3 = re.findall(pattern3, md_content)
-    video_links.extend(matches3)
+    # 3. Bare URLs
+    links.extend(re.findall(rf'(https?://(?:www\.)?(?:{domains})/[^\s\)]+)', md_content))
     
-    # Remove duplicates while preserving order
+    # Deduplicate while preserving order
     seen = set()
-    unique_links = []
-    for link in video_links:
-        if link not in seen:
-            seen.add(link)
-            unique_links.append(link)
-    
-    return unique_links
+    return [l for l in links if not (l in seen or seen.add(l))]
 
-def process_markdown_files(input_folder):
-    """Process all markdown files and extract video information"""
-    input_path = Path(input_folder)
-    
-    # Find all markdown files
-    md_files = list(input_path.glob('*.md'))
+def process_files(input_dir: str):
+    """Iterate through MD files and build the dataset."""
+    input_path = Path(input_dir)
+    md_files = sorted(list(input_path.glob("*.md")))
+    results = []
     
     if not md_files:
-        print(f"No Markdown files found in {input_folder}")
-        return []
-    
-    print(f"Found {len(md_files)} Markdown files")
-    print("="*60)
-    
-    video_data = []
-    
-    for md_file in md_files:
-        print(f"\nProcessing: {md_file.name}")
-        
-        # Extract module number from filename
+        return results
+
+    for md_file in tqdm(md_files, desc="Scanning", unit="file"):
         module_num = extract_module_number(md_file.name)
-        
-        if module_num is None:
-            print(f"  ⚠ Could not extract module number, skipping...")
-            continue
+        # If no number, we still process but keep it as a string
+        idx = module_num if module_num is not None else 999
         
         try:
-            # Read markdown content
-            with open(md_file, 'r', encoding='utf-8') as f:
-                md_content = f.read()
+            content = md_file.read_text(encoding="utf-8")
+            title = extract_first_heading(content)
+            links = extract_video_links(content)
             
-            # Extract first heading (course title)
-            course_title = extract_first_heading(md_content)
-            print(f"  Module: {module_num}")
-            print(f"  Title: {course_title}")
-            
-            # Extract video links
-            video_links = extract_video_links(md_content)
-            
-            if video_links:
-                print(f"  Found {len(video_links)} video(s)")
-                
-                # If multiple videos, number them as x.1, x.2, x.3, etc.
-                for idx, link in enumerate(video_links, 1):
-                    video_source = detect_video_source(link)
-                    
-                    if len(video_links) == 1:
-                        module_display = str(module_num)
-                    else:
-                        module_display = f"{module_num}.{idx}"
-                    
-                    video_data.append({
-                        'module': module_num,
-                        'module_display': module_display,
-                        'sub_index': idx,
-                        'link': link,
-                        'course_title': course_title,
-                        'video_source': video_source
-                    })
-                    
-                    print(f"    {module_display}. {video_source}: {link[:60]}...")
-            else:
-                print(f"  No videos found")
-                # Still add entry but with no video
-                video_data.append({
-                    'module': module_num,
-                    'module_display': str(module_num),
-                    'sub_index': 0,
+            if not links:
+                results.append({
+                    'module': idx,
+                    'display': str(idx),
                     'link': '',
-                    'course_title': course_title,
-                    'video_source': 'N/A'
+                    'title': title,
+                    'source': 'N/A'
                 })
-        
+                continue
+                
+            for i, link in enumerate(links, 1):
+                display = str(idx) if len(links) == 1 else f"{idx}.{i}"
+                results.append({
+                    'module': idx,
+                    'display': display,
+                    'link': link,
+                    'title': title,
+                    'source': detect_video_source(link)
+                })
         except Exception as e:
-            print(f"  ✗ Error: {str(e)}")
-    
-    return video_data
-
-def save_to_csv(video_data, output_file):
-    """Save video data to CSV file"""
-    if not video_data:
-        print("\nNo data to save!")
-        return
-    
-    # Sort by module number, then by sub_index
-    video_data.sort(key=lambda x: (x['module'], x['sub_index']))
-    
-    # Write to CSV
-    with open(output_file, 'w', newline='', encoding='utf-8') as f:
-        writer = csv.writer(f)
-        
-        # Write header
-        writer.writerow(['Module Number', 'Link', 'Course Title', 'Video Source'])
-        
-        # Write data
-        for item in video_data:
-            writer.writerow([
-                item['module_display'],
-                item['link'],
-                item['course_title'],
-                item['video_source']
-            ])
-    
-    print(f"\n✓ CSV file created: {output_file}")
+            tqdm.write(f"Error reading {md_file.name}: {e}")
+            
+    return results
 
 def main():
-    print("="*60)
-    print("Video Link Extractor - Markdown to CSV")
-    print("="*60)
-    print()
-    
-    # Get input folder
-    input_folder = input("Enter input folder path (or press Enter for 'output_md'): ").strip()
-    if not input_folder:
-        input_folder = "output_md"
-    
-    # Check if input folder exists
-    if not Path(input_folder).exists():
-        print(f"\n❌ Error: Input folder '{input_folder}' does not exist!")
+    parser = argparse.ArgumentParser(description="Extract video links from Markdown files.")
+    parser.add_argument("--input", default="output_md", help="Directory containing .md files.")
+    parser.add_argument("--output", default="video_links.csv", help="Output CSV filename.")
+    args = parser.parse_args()
+
+    ipath = Path(args.input)
+    if not ipath.exists():
+        print(f"Error: Input directory '{args.input}' not found.")
         return
+
+    data = process_files(args.input)
+    if not data:
+        print("No video links found.")
+        return
+
+    # Sort primarily by module number
+    data.sort(key=lambda x: (x['module'], x['display']))
     
-    # Get output CSV filename
-    output_file = input("Enter output CSV filename (or press Enter for 'video_links.csv'): ").strip()
-    if not output_file:
-        output_file = "video_links.csv"
-    
-    # Make sure it has .csv extension
-    if not output_file.endswith('.csv'):
-        output_file += '.csv'
-    
-    print()
-    
-    # Process files
-    video_data = process_markdown_files(input_folder)
-    
-    # Save to CSV
-    if video_data:
-        save_to_csv(video_data, output_file)
-        
-        # Summary
-        print("\n" + "="*60)
-        print("Summary:")
-        print("="*60)
-        video_count = sum(1 for item in video_data if item['link'])
-        print(f"Total modules processed: {len(set(item['module'] for item in video_data))}")
-        print(f"Total videos found: {video_count}")
-        print(f"Modules without videos: {sum(1 for item in video_data if not item['link'])}")
-    else:
-        print("\n❌ No video data extracted!")
+    with open(args.output, 'w', newline='', encoding='utf-8') as f:
+        writer = csv.writer(f)
+        writer.writerow(['Index', 'Video URL', 'Lesson Title', 'Platform'])
+        for item in data:
+            writer.writerow([item['display'], item['link'], item['title'], item['source']])
+
+    v_count = sum(1 for d in data if d['link'])
+    print(f"\nDone! Extracted {v_count} video(s) into '{args.output}'.")
 
 if __name__ == "__main__":
     main()

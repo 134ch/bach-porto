@@ -1,19 +1,36 @@
-# Video Link Extractor (Vidlink.py)
+# Video Link Extractor (vidlink.py)
 
-This tool scans a folder of Markdown files, extracts video URLs (YouTube, Loom, Vimeo, etc.), and organizes them into a CSV file. It is particularly useful for cataloging course videos or lesson content.
+Scans a directory of Markdown files and extracts all video URLs into a clean CSV file for asset auditing or bulk downloading.
 
 ## Prerequisites
-- Python 3.x
-- No external libraries required (uses `os`, `re`, `csv`, `pathlib`).
+```bash
+pip install -r requirements.txt
+```
 
 ## Usage
-1. Run the script: `python Vidlink.py`
-2. Enter the input folder path containing your `.md` files (defaults to `output_md`).
-3. Enter the desired output CSV filename (defaults to `video_links.csv`).
-4. The script will process the files and generate a summary of modules and videos found.
+
+### Basic Usage
+Place your `.md` files (e.g., from `html2md` or `html2md-blog`) in a folder named `output_md` and run:
+```bash
+python vidlink.py
+```
+
+### Options
+Specify custom paths via command line:
+```bash
+python vidlink.py --input my_content --output links.csv
+```
+
+### Command Line Arguments
+- `--input`: Source directory of Markdown files (default: `output_md`).
+- `--output`: Name of the CSV file to generate (default: `video_links.csv`).
 
 ## Features
-- **Automatic Module Detection**: Extracts module numbers from filenames (e.g., "3. Introduction.md" becomes Module 3).
+- **Broad Detection**: Identifies video links from YouTube, Loom, Vimeo, Wistia, Vidyard, and Streamable.
+- **Auto-Indexing**: Detects module numbers from filenames to keep your video list in the correct order.
+- **Titled Lists**: Pulls the first `#` heading from your Markdown as the lesson title.
+- **Progress Tracking**: Shows a visual progress bar while scanning large directories.
+ Introduction.md" becomes Module 3).
 - **Platform Detection**: Identifies if a link is from YouTube, Loom, Vimeo, Wistia, Vidyard, or Streamable.
 - **Title Extraction**: Automatically pulls the first `#` heading as the course/lesson title.
 - **CSV Export**: Creates a clean spreadsheet with Module Number, Link, Title, and Source.
