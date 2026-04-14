@@ -1,20 +1,34 @@
-# Blog Scraper (getblog.py)
+# Blog Downloader (getblog.py)
 
-A specialized scraper designed to download articles from a list of URLs. It saves both the full HTML for archival purposes and a cleaned text version for easy reading or further processing.
+This script automates the process of downloading blog articles from a list of URLs and saving them in both raw HTML and cleaned text formats.
 
 ## Prerequisites
 ```bash
-pip install requests beautifulsoup4
+pip install -r requirements.txt
 ```
 
 ## Usage
-1. Open `getblog.py` in an editor.
-2. Update the `URLS` list with the links you want to download.
-3. Run the script: `python getblog.py`
-4. The articles will be saved in a new folder named `pga_articles/`.
+
+### Basic Usage
+Place your URLs in a file named `urls.txt` (one URL per line) and run:
+```bash
+python getblog.py
+```
+
+### Advanced Usage
+You can specify a custom input file or output directory:
+```bash
+python getblog.py --file my_urls.txt --output pga_blogs --delay 2.0
+```
+
+### Command Line Arguments
+- `--file`: Path to the text file containing URLs (default: `urls.txt`).
+- `--output`: Directory to save the downloaded articles (default: `downloaded_blogs`).
+- `--delay`: Delay between requests in seconds to be polite to the server (default: `1.0`).
 
 ## Features
-- **Dual Output**: Saves `.html` (original) and `.txt` (cleaned text) for every URL.
-- **Slugified Filenames**: Automatically converts URL paths into safe, readable filenames.
-- **Polite Scraping**: Includes a 1-second delay between requests to avoid server strain.
-- **Deep Extraction**: Targets `<article>` or `<main>` tags first to ensure content quality over page clutter.
+- **Clean Extraction**: Attempts to extract only the main article text, falling back to body content if necessary.
+- **Safe Filenames**: Automatically cleans URLs to create safe, descriptive filenames.
+- **Progress Feedback**: Shows a real-time progress bar using `tqdm`.
+- **Efficient**: Uses a persistent session for multiple requests to the same domain.
+- **Retry Logic**: Handles network errors and skips failed URLs gracefully.
