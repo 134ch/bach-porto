@@ -1,0 +1,23 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.env
+.venv
+env/
+venv/
+
+# App-specific downloads
+**/skool_downloads/
+**/skool_downloads_html/
+**/downloaded_blogs/
+**/pga_articles/
+**/blog_html/
+**/blog_markdown/
+**/pga_markdown/
+**/md_output/
+**/pdf_output/
+
+# IDE
+.vscode/
+.idea/
