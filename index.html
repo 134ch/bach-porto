@@ -1,807 +1,428 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bach Widyantoro | Full-Stack Developer & Engineer</title>
-    <!-- Google Fonts -->
+    <title>BACH | Agentic Ghostwriter for EMI/EMC Consultants</title>
+
+    <!-- SEO & Meta Tags -->
+    <meta name="description" content="I build Agentic Ghostwriting systems that translate complex technical risks into clear business decisions. For EMI/EMC and Lightning Protection Engineers.">
+    <meta name="keywords" content="Agentic Ghostwriter, EMI/EMC, Lightning Protection, Technical Content, Consultant Marketing">
+    <meta name="author" content="Bachtiar Widyantoro">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://bachwidy.site/">
+    <meta property="og:title" content="BACH | Agentic Ghostwriter for EMI/EMC Consultants">
+    <meta property="og:description" content="Translating complex technical concepts into business outcomes. Bridging the gap between the $1 bolt and the $5 bolt.">
+    <meta property="og:image" content="https://bachwidy.site/og-image.jpg">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://bachwidy.site/">
+    <meta property="twitter:title" content="BACH | Agentic Ghostwriter for EMI/EMC Consultants">
+    <meta property="twitter:description" content="Translating complex technical concepts into business outcomes. Bridging the gap between the $1 bolt and the $5 bolt.">
+    <meta property="twitter:image" content="https://bachwidy.site/og-image.jpg">
+
+    <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --bg-dark: #05070a;
-            --bg-card: rgba(13, 17, 23, 0.7);
-            --accent-primary: #00f2ff;
-            --accent-secondary: #7000ff;
-            --accent-success: #00ff88;
-            --text-main: #e6edf3;
-            --text-muted: #8b949e;
-            --glass-border: rgba(255, 255, 255, 0.1);
-        }
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        slate: {
+                            850: '#151e2e',
+                            900: '#0f172a',
+                            950: '#020617',
+                        },
+                        blueprint: {
+                            500: '#3b82f6',
+                            600: '#2563eb',
+                            700: '#1d4ed8',
+                            800: '#1e40af',
+                            900: '#1e3a8a',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        display: ['Space Grotesk', 'sans-serif'],
+                    }
+                }
+            }
         }
-
+    </script>
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .text-balance {
+                text-wrap: balance;
+            }
+        }
         body {
-            background-color: var(--bg-dark);
-            background-image: 
-                radial-gradient(circle at 10% 20%, rgba(0, 242, 255, 0.05) 0%, transparent 40%),
-                radial-gradient(circle at 90% 80%, rgba(112, 0, 255, 0.05) 0%, transparent 40%);
-            color: var(--text-main);
-            font-family: 'Outfit', sans-serif;
-            line-height: 1.6;
+            background-color: theme('colors.slate.950');
+            color: theme('colors.slate.50');
             overflow-x: hidden;
-            scroll-behavior: smooth;
         }
-
-        /* --- Decorations --- */
-        .blur-orb {
-            position: fixed;
-            width: 400px;
-            height: 400px;
-            border-radius: 50%;
-            background: var(--accent-secondary);
-            filter: blur(150px);
-            opacity: 0.1;
-            z-index: -1;
-            pointer-events: none;
-        }
-
-        /* --- Header --- */
-        header {
-            position: fixed;
-            top: 0;
-            width: 100%;
-            padding: 1.2rem 5%;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            z-index: 1000;
-            background: rgba(5, 7, 10, 0.8);
-            backdrop-filter: blur(15px);
-            border-bottom: 1px solid var(--glass-border);
-        }
-
-        .logo {
-            font-size: 1.3rem;
-            font-weight: 800;
-            letter-spacing: -1px;
-            background: linear-gradient(90deg, var(--accent-primary), var(--accent-secondary));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        nav {
-            display: flex;
-            gap: 1.5rem;
-        }
-
-        nav a {
-            color: var(--text-muted);
-            text-decoration: none;
-            font-size: 0.85rem;
-            font-weight: 500;
-            transition: color 0.3s;
-        }
-
-        nav a:hover { color: var(--accent-primary); }
-
-        /* --- Hero Section --- */
-        .hero {
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            padding: 120px 5% 60px;
-        }
-
-        .hero-tag {
-            background: rgba(0, 242, 255, 0.1);
-            color: var(--accent-primary);
-            padding: 0.5rem 1.2rem;
-            border-radius: 100px;
-            font-size: 0.8rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            margin-bottom: 1.5rem;
-            border: 1px solid rgba(0, 242, 255, 0.2);
-        }
-
-        .hero h1 {
-            font-size: clamp(2.5rem, 8vw, 5rem);
-            font-weight: 800;
-            line-height: 1.1;
-            margin-bottom: 1.5rem;
-            letter-spacing: -2px;
-        }
-
-        .hero h1 span {
-            background: linear-gradient(90deg, var(--accent-primary), var(--accent-success));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .hero p {
-            max-width: 700px;
-            color: var(--text-muted);
-            font-size: clamp(1rem, 2vw, 1.2rem);
-            margin-bottom: 3rem;
-            line-height: 1.8;
-        }
-
-        .tech-stack-hero {
-            max-width: 700px;
-            margin: 0 auto 2rem;
-            color: var(--accent-primary);
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.9rem;
-        }
-
-        .hero-buttons {
-            display: flex;
-            gap: 1.5rem;
-            flex-wrap: wrap;
-            justify-content: center;
-        }
-
-        .btn {
-            padding: 1rem 2.5rem;
-            border-radius: 8px;
-            font-weight: 600;
-            text-decoration: none;
-            transition: all 0.3s;
-            cursor: pointer;
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .btn-primary { background: var(--accent-primary); color: var(--bg-dark); }
-        .btn-primary:hover { transform: scale(1.05); box-shadow: 0 0 30px rgba(0, 242, 255, 0.4); }
-        
-        .btn-outline { border: 1px solid var(--glass-border); color: var(--text-main); }
-        .btn-outline:hover { background: var(--glass-border); }
-
-        /* --- Section Styling --- */
-        .section {
-            padding: 6rem 5%;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .section-header {
-            margin-bottom: 4rem;
-        }
-
-        .section-header h2 {
-            font-size: 2.5rem;
-            font-weight: 800;
-            margin-bottom: 1rem;
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-
-        .section-header h2::after {
-            content: '';
-            height: 1px;
-            flex-grow: 1;
-            background: var(--glass-border);
-        }
-
-        .section-intro {
-            color: var(--text-muted);
-            font-size: 1rem;
-            max-width: 800px;
-            margin-bottom: 3rem;
-            line-height: 1.8;
-        }
-
-        /* --- Grid Layouts --- */
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 2rem;
-        }
-
-        .card {
-            background: var(--bg-card);
-            padding: 2.5rem;
-            border-radius: 16px;
-            border: 1px solid var(--glass-border);
-            backdrop-filter: blur(10px);
-            transition: all 0.4s;
-            text-decoration: none;
-            color: inherit;
-            position: relative;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .card:hover {
-            border-color: var(--accent-primary);
-            transform: translateY(-8px);
-            background: rgba(13, 17, 23, 0.9);
-        }
-
-        .card-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            margin-bottom: 1.5rem;
-        }
-
-        .card-title {
-            font-size: 1.3rem;
-            font-weight: 700;
-            color: var(--accent-primary);
-        }
-
-        .github-icon {
-            width: 24px;
-            height: 24px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            opacity: 0.6;
-            transition: opacity 0.3s;
-        }
-
-        .card:hover .github-icon {
-            opacity: 1;
-            color: var(--accent-primary);
-        }
-
-        .card-description {
-            color: var(--text-muted);
-            font-size: 0.95rem;
-            margin-bottom: 1.5rem;
-            line-height: 1.8;
-            flex-grow: 1;
-        }
-
-        .tech-badges {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-            margin-bottom: 1.5rem;
-        }
-
-        .tech-badge {
-            background: rgba(0, 242, 255, 0.1);
-            border: 1px solid var(--accent-primary);
-            color: var(--accent-primary);
-            padding: 0.4rem 0.8rem;
-            border-radius: 6px;
-            font-size: 0.75rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .cli-copy {
-            background: #161b22;
-            padding: 0.8rem 1.2rem;
-            border-radius: 8px;
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.8rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            color: var(--accent-primary);
-            border: 1px solid #30363d;
-            cursor: pointer;
-            margin-top: auto;
-            transition: all 0.3s;
-        }
-
-        .cli-copy:hover {
-            border-color: var(--accent-primary);
-            box-shadow: 0 0 15px rgba(0, 242, 255, 0.2);
-        }
-
-        .view-code-link {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            color: var(--accent-primary);
-            text-decoration: none;
-            font-size: 0.85rem;
-            font-weight: 600;
-            margin-top: 1rem;
-            transition: all 0.3s;
-        }
-
-        .view-code-link:hover {
-            gap: 10px;
-        }
-
-        /* --- Experience & Skills Specific --- */
-        .experience-item {
-            margin-bottom: 3rem;
-            padding-left: 2rem;
-            border-left: 2px solid var(--glass-border);
-            position: relative;
-        }
-
-        .experience-item::before {
-            content: '';
+        .svg-bg {
             position: absolute;
-            left: -7px;
             top: 0;
-            width: 12px;
-            height: 12px;
-            background: var(--accent-primary);
-            border-radius: 50%;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
         }
-
-        .exp-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            margin-bottom: 1rem;
-            flex-wrap: wrap;
-            gap: 10px;
+        .grounding-wire {
+            stroke: rgba(59, 130, 246, 0.3);
+            stroke-width: 2;
+            fill: none;
         }
-
-        .exp-title { font-size: 1.4rem; font-weight: 700; color: var(--text-main); }
-        .exp-company { color: var(--accent-primary); font-weight: 600; font-size: 1rem; }
-        .exp-date { color: var(--text-muted); font-size: 0.9rem; font-family: 'JetBrains Mono', monospace; }
-
-        .exp-list {
-            list-style: none;
-            color: var(--text-muted);
-            font-size: 0.95rem;
-        }
-
-        .exp-list li { margin-bottom: 0.8rem; position: relative; padding-left: 1.5rem; }
-        .exp-list li::before { content: '→'; position: absolute; left: 0; color: var(--accent-success); }
-
-        .skills-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-            gap: 2rem;
-        }
-
-        .skill-group h4 {
-            font-size: 0.8rem;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            color: var(--accent-primary);
-            margin-bottom: 1.5rem;
-        }
-
-        .skill-tags { display: flex; flex-wrap: wrap; gap: 10px; }
-        .skill-tag {
-            background: rgba(255,255,255,0.05);
-            padding: 0.5rem 1rem;
-            border-radius: 6px;
-            font-size: 0.85rem;
-            border: 1px solid var(--glass-border);
-        }
-
-        /* --- CTA Section --- */
-        .cta-section {
-            background: linear-gradient(135deg, rgba(0, 242, 255, 0.05) 0%, rgba(112, 0, 255, 0.05) 100%);
-            border: 1px solid var(--glass-border);
-            border-radius: 16px;
-            padding: 4rem 3rem;
-            text-align: center;
-            margin: 6rem 5% 0;
-            max-width: 1200px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-
-        .cta-section h3 {
-            font-size: 2rem;
-            font-weight: 800;
-            margin-bottom: 1rem;
-        }
-
-        .cta-section p {
-            color: var(--text-muted);
-            font-size: 1.1rem;
-            margin-bottom: 2rem;
-            max-width: 600px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-
-        .cta-buttons {
-            display: flex;
-            gap: 1.5rem;
-            justify-content: center;
-            flex-wrap: wrap;
-        }
-
-        /* --- Footer --- */
-        footer {
-            padding: 5rem 5%;
-            text-align: center;
-            border-top: 1px solid var(--glass-border);
-            background: rgba(5,7,10,0.5);
-        }
-
-        .footer-content {
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .perf-badge {
-            display: inline-block;
-            background: rgba(0, 255, 136, 0.1);
-            border: 1px solid var(--accent-success);
-            color: var(--accent-success);
-            padding: 0.6rem 1.2rem;
-            border-radius: 6px;
-            font-size: 0.85rem;
-            font-family: 'JetBrains Mono', monospace;
-            margin-bottom: 1.5rem;
-        }
-
-        .social-links {
-            display: flex;
-            justify-content: center;
-            gap: 2.5rem;
-            margin: 2rem 0;
-        }
-
-        .social-links a { color: var(--text-main); text-decoration: none; font-weight: 600; font-size: 0.9rem; }
-        .social-links a:hover { color: var(--accent-primary); }
-
-        /* --- Back to Top --- */
-        .back-to-top {
-            position: fixed;
-            bottom: 2rem;
-            right: 2rem;
-            width: 50px;
-            height: 50px;
-            background: var(--accent-primary);
-            color: var(--bg-dark);
-            border: none;
-            border-radius: 50%;
-            cursor: pointer;
-            display: none;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.5rem;
-            transition: all 0.3s;
-            z-index: 999;
-        }
-
-        .back-to-top:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 0 25px rgba(0, 242, 255, 0.4);
-        }
-
-        .back-to-top.show {
-            display: flex;
-        }
-
-        /* --- Toast --- */
-        #toast {
-            position: fixed;
-            bottom: 2rem;
-            left: 50%;
-            transform: translateX(-50%);
-            background: var(--accent-success);
-            color: var(--bg-dark);
-            padding: 0.8rem 2rem;
-            border-radius: 50px;
-            font-weight: 600;
-            opacity: 0;
-            transition: opacity 0.3s;
-            z-index: 2000;
-        }
-
-        @media (max-width: 900px) {
-            .grid { grid-template-columns: 1fr; }
-        }
-
-        @media (max-width: 768px) {
-            header { padding: 1rem 5%; }
-            nav { gap: 1rem; }
-            nav a { font-size: 0.75rem; margin-left: 0; }
-            .hero { padding: 100px 5% 40px; }
-            .hero h1 { font-size: 3rem; }
-            .exp-header { flex-direction: column; }
-            .cta-section { padding: 2rem; }
-            .hero-buttons { flex-direction: column; width: 100%; }
-            .btn { width: 100%; justify-content: center; }
-            .back-to-top { width: 45px; height: 45px; bottom: 1.5rem; right: 1.5rem; }
+        .spark {
+            stroke: #3b82f6;
+            stroke-width: 4;
+            fill: none;
+            filter: drop-shadow(0 0 10px rgba(59, 130, 246, 0.8));
         }
     </style>
 </head>
-<body>
+<body class="antialiased selection:bg-blueprint-500 selection:text-white">
 
-    <div id="toast">Command Copied!</div>
-    <div class="blur-orb" style="top: 20%; left: -100px;"></div>
-    <div class="blur-orb" style="bottom: 10%; right: -100px; background: var(--accent-primary);"></div>
+    <!-- Hero Section (The Hook) -->
+    <section id="hero" class="relative min-h-screen flex items-center justify-center overflow-hidden bg-slate-950">
+        <!-- SVG Grounding Animation -->
+        <svg class="svg-bg" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+            <line x1="50%" y1="0" x2="50%" y2="100%" class="grounding-wire hero-wire" />
+            <!-- The spark will be animated via GSAP along this line -->
+        </svg>
 
-    <header>
-        <div class="logo">BACH.WIDY</div>
-        <nav>
-            <a href="#experience">Experience</a>
-            <a href="#suite">Projects</a>
-            <a href="#skills">Skills</a>
-            <a href="https://github.com/134ch/bach-porto" target="_blank">Repository</a>
-        </nav>
-    </header>
-
-    <section class="hero">
-        <label class="hero-tag">Jakarta, Indonesia</label>
-        <h1>Bachtiar <span>Widyantoro</span></h1>
-        <p>Full-stack developer bridging engineering precision and modern development. I design and deploy production-ready systems—from Python automation tools to cloud infrastructure—with a focus on solving real problems.</p>
-        <div class="tech-stack-hero">Python • JavaScript • Node.js • Cloudflare • Google Cloud</div>
-        
-        <div class="hero-buttons">
-            <a href="#suite" class="btn btn-primary">Featured Work</a>
-            <a href="Bachtiar_Widyantoro_CV.pdf" target="_blank" class="btn btn-outline">📥 Download CV</a>
+        <div class="relative z-10 max-w-5xl mx-auto px-6 text-center">
+            <div class="hero-content">
+                <h1 class="font-display text-5xl md:text-7xl font-bold leading-tight mb-8 text-balance text-white">
+                    You've engineered a system that doesn't fail. <br/>
+                    <span class="text-slate-400">Now, you need to articulate its invisible value.</span>
+                </h1>
+                <p class="text-lg md:text-xl text-slate-300 max-w-3xl mx-auto font-light leading-relaxed">
+                    I build Agentic Ghostwriting systems that translate complex technical risks into clear business decisions.
+                </p>
+            </div>
         </div>
     </section>
 
-    <!-- Professional Experience -->
-    <section id="experience" class="section">
-        <div class="section-header">
-            <h2>Experience</h2>
+    <!-- The Problem Section (The Race to the Bottom) -->
+    <section id="problem" class="relative py-32 bg-slate-900 border-t border-slate-800 problem-section">
+        <!-- SVG Noise Background (animated later) -->
+        <svg class="svg-bg noise-svg opacity-30" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+            <!-- Jumbled cables will be drawn here -->
+            <path class="jumbled-cable stroke-slate-700" d="M0,50 Q100,200 200,50 T400,50 T600,100 T800,20 T1000,150 T1200,50" fill="none" stroke-width="1.5"/>
+            <path class="jumbled-cable stroke-slate-700" d="M0,150 Q150,0 250,150 T500,50 T700,200 T900,50 T1100,180 T1200,100" fill="none" stroke-width="1.5"/>
+            <path class="jumbled-cable stroke-slate-700" d="M0,100 Q120,80 220,180 T450,20 T650,150 T850,80 T1050,190 T1200,150" fill="none" stroke-width="1.5"/>
+        </svg>
+
+        <div class="relative z-10 max-w-4xl mx-auto px-6">
+            <div class="space-y-12 text-xl text-slate-300 font-light leading-relaxed problem-text">
+                <p class="text-2xl font-medium text-white mb-8">You are trapped in the "Race to the Bottom."</p>
+
+                <p>Technical consultants are too often treated as a bureaucratic checkbox. A mandatory sign-off before construction begins. A line item to be minimized.</p>
+
+                <p>When your true value is preventative—stopping a $50,000 failure before it occurs—your expertise becomes invisible. The client only sees the cost of the grounding system, not the catastrophe it prevented. Because of the curse of knowledge, explaining why a specific equipotential bonding approach is necessary sounds like academic noise to a business decision-maker.</p>
+
+                <p>This gap in translation costs you premium contracts.</p>
+            </div>
         </div>
-        
-        <div class="experience-item">
-            <div class="exp-header">
+    </section>
+
+    <!-- The Pivot Section (The Execution Trap to Clarity) -->
+    <section id="pivot" class="relative py-32 bg-slate-950 border-t border-slate-800 pivot-section overflow-hidden">
+        <!-- Organized Lines SVG -->
+        <svg class="svg-bg organized-svg opacity-0" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+            <line x1="10%" y1="0" x2="10%" y2="100%" class="stroke-blueprint-900" stroke-width="1"/>
+            <line x1="30%" y1="0" x2="30%" y2="100%" class="stroke-blueprint-900" stroke-width="1"/>
+            <line x1="50%" y1="0" x2="50%" y2="100%" class="stroke-blueprint-800" stroke-width="2"/>
+            <line x1="70%" y1="0" x2="70%" y2="100%" class="stroke-blueprint-900" stroke-width="1"/>
+            <line x1="90%" y1="0" x2="90%" y2="100%" class="stroke-blueprint-900" stroke-width="1"/>
+
+            <line x1="0" y1="50%" x2="100%" y2="50%" class="stroke-blueprint-500 grounding-rule opacity-0" stroke-width="2"/>
+        </svg>
+
+        <div class="relative z-10 max-w-4xl mx-auto px-6">
+            <h2 class="font-display text-3xl md:text-4xl font-semibold mb-12 text-white pivot-title">From 200kA Strikes to Clear Signals.</h2>
+
+            <div class="space-y-8 text-lg text-slate-300 font-light pivot-text">
+                <p>For 10 years, I was a Lightning Protection Engineer. I've designed systems for 200kA strikes, analyzed soil resistivity, and navigated the brutal bureaucracy of state-owned enterprises.</p>
+
+                <p>I know what it means to be stuck in the execution trap. You focus so heavily on making sure the system doesn't fail that you forget to explain why it works.</p>
+
+                <p>I realized the most critical engineering failure wasn't mechanical—it was communication. So, I pivoted. I now build systems that translate deep engineering constraints into clear, undeniable business value.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- The Face Module -->
+    <section id="face-module" class="py-24 bg-slate-900 border-t border-slate-800">
+        <div class="max-w-5xl mx-auto px-6">
+            <div class="grid grid-cols-1 md:grid-cols-12 gap-12 items-center">
+                <div class="md:col-span-5 relative group face-image-container">
+                    <div class="absolute inset-0 bg-blueprint-600 rounded-lg transform translate-x-4 translate-y-4 opacity-50 transition-transform group-hover:translate-x-2 group-hover:translate-y-2"></div>
+                    <!-- Using a sophisticated placeholder since no image URL was provided, meant to be replaced by actual portrait -->
+                    <div class="relative aspect-[4/5] bg-slate-800 rounded-lg border border-slate-700 overflow-hidden flex items-center justify-center grayscale contrast-125">
+                         <div class="text-slate-600 font-display font-medium text-xl tracking-widest">[ BACH ]</div>
+                    </div>
+                </div>
+                <div class="md:col-span-7 space-y-6 face-bio">
+                    <h3 class="font-display text-2xl text-white font-semibold">Bachtiar "Bach" Widyantoro</h3>
+                    <p class="text-blueprint-400 font-mono text-sm uppercase tracking-wider">Founder, BWGhostwriting</p>
+                    <div class="h-px w-16 bg-slate-700 my-6"></div>
+                    <p class="text-slate-300 font-light text-lg leading-relaxed">
+                        Electrical Engineer turned Agentic Ghostwriter. Bridging the gap between hardcore technical precision and premium digital storytelling.
+                    </p>
+                    <p class="text-slate-400 font-light leading-relaxed">
+                        I don't need three hours of basic explanation to understand EMI/EMC or power systems. I speak the language, but I write for the decision-maker.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- The Solution Section (Agentic Ghostwriting) -->
+    <section id="solution" class="py-32 bg-slate-950 border-t border-slate-800 relative">
+        <!-- Blueprint Grid Background -->
+        <div class="absolute inset-0 bg-[linear-gradient(rgba(30,58,138,0.1)_1px,transparent_1px),linear-gradient(90deg,rgba(30,58,138,0.1)_1px,transparent_1px)] bg-[size:40px_40px] pointer-events-none"></div>
+
+        <div class="relative z-10 max-w-5xl mx-auto px-6">
+            <h2 class="font-display text-3xl md:text-5xl font-bold mb-16 text-center text-white solution-title">
+                Engineering doesn't scale. <br/>
+                <span class="text-blueprint-400">Ghostwriting does.</span>
+            </h2>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- Educational Content Box -->
+                <div class="bg-slate-900/80 backdrop-blur-sm p-10 border border-slate-700 rounded-xl hover:border-blueprint-500 transition-colors duration-300 solution-card">
+                    <div class="w-12 h-12 bg-blueprint-900/50 rounded-lg flex items-center justify-center mb-6">
+                        <svg class="w-6 h-6 text-blueprint-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path></svg>
+                    </div>
+                    <h3 class="font-display text-xl font-semibold text-white mb-4">Authority Architecture</h3>
+                    <p class="text-slate-400 font-light leading-relaxed">
+                        Sales is education. We extract your deep domain expertise and translate it into skimmable, high-impact content that proves you are the safest bet.
+                    </p>
+                </div>
+
+                <!-- Ghostwriting Agent Box -->
+                <div class="bg-slate-900/80 backdrop-blur-sm p-10 border border-slate-700 rounded-xl hover:border-blueprint-500 transition-colors duration-300 solution-card">
+                    <div class="w-12 h-12 bg-blueprint-900/50 rounded-lg flex items-center justify-center mb-6">
+                        <svg class="w-6 h-6 text-blueprint-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+                    </div>
+                    <h3 class="font-display text-xl font-semibold text-white mb-4">Agentic Implementation</h3>
+                    <p class="text-slate-400 font-light leading-relaxed">
+                        A custom Ghostwriting Agent built specifically on your company's proprietary technical data, streamlining your go-to-market communication indefinitely.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- The Proof Section (Stories & Constraints) -->
+    <section id="proof" class="py-32 bg-slate-900 border-t border-slate-800">
+        <div class="max-w-5xl mx-auto px-6">
+            <h2 class="font-display text-3xl md:text-4xl font-semibold mb-16 text-center text-white proof-title">Make it work vs. Don't make it fail.</h2>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="bg-slate-950 p-8 border border-slate-800 rounded-xl relative overflow-hidden group proof-card">
+                    <div class="absolute inset-0 bg-gradient-to-br from-blueprint-900/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                    <div class="relative z-10">
+                        <div class="text-slate-500 font-mono text-xs uppercase tracking-widest mb-4">Case Study 01</div>
+                        <h3 class="text-xl font-medium text-white mb-4">The $1 Bolt vs. The $5 Bolt</h3>
+                        <p class="text-slate-400 font-light leading-relaxed">
+                            A procurement team will always choose the $1 bolt. It's up to you to clearly articulate why the $5 bolt prevents a $500,000 catastrophic failure. We write the collateral that wins that argument before you even step into the room.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="bg-slate-950 p-8 border border-slate-800 rounded-xl relative overflow-hidden group proof-card">
+                    <div class="absolute inset-0 bg-gradient-to-br from-blueprint-900/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                    <div class="relative z-10">
+                        <div class="text-slate-500 font-mono text-xs uppercase tracking-widest mb-4">Case Study 02</div>
+                        <h3 class="text-xl font-medium text-white mb-4">The Design Review ROI</h3>
+                        <p class="text-slate-400 font-light leading-relaxed">
+                            Catching an EMI flaw during the design phase costs nothing. Fixing it after manufacturing ruins margins. By publishing educational tear-downs of these scenarios, you become the definitive authority that clients seek out early.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- The Call to Action (The Educational Handshake) -->
+    <section id="cta" class="py-32 bg-slate-950 border-t border-slate-800">
+        <div class="max-w-3xl mx-auto px-6 text-center">
+            <h2 class="font-display text-3xl md:text-4xl font-bold mb-6 text-white">Let's translate your expertise.</h2>
+            <p class="text-lg text-slate-400 font-light mb-12">
+                No aggressive sales pitches. Just a transparent conversation about the risks and opportunities of ghostwriting your technical knowledge.
+            </p>
+
+            <!-- Static Formspree Form Integration -->
+            <form action="https://formspree.io/f/placeholder_endpoint" method="POST" class="max-w-md mx-auto space-y-4 text-left">
+                <!-- Replace 'placeholder_endpoint' with actual Formspree ID later if needed -->
                 <div>
-                    <div class="exp-title">Founder & CEO</div>
-                    <div class="exp-company">BWGhostwriting</div>
+                    <label for="email" class="block text-sm font-medium text-slate-400 mb-1">Email Address</label>
+                    <input type="email" id="email" name="email" required
+                        class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-3 text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blueprint-500 focus:border-transparent transition-all"
+                        placeholder="engineer@company.com">
                 </div>
-                <div class="exp-date">Feb 2025 – Present</div>
-            </div>
-            <ul class="exp-list">
-                <li>Architected a three-tier AI automation system with Build Layer (Claude Code), Runtime Layer (CrewAI/Google Cloud Run), and Interface Layer (Telegram/EdgeClaw).</li>
-                <li>Centralized LLM gateway via LiteLLM Proxy with Vertex AI, Exa API, and Chroma DB vector memory integration.</li>
-                <li>Implemented real-time analytics (PostHog) for user engagement tracking and feature iteration.</li>
-            </ul>
-        </div>
+                <button type="submit"
+                    class="w-full bg-white text-slate-950 font-medium py-3 px-6 rounded-lg hover:bg-slate-200 transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-slate-950 focus:ring-white">
+                    Start the Conversation
+                </button>
+            </form>
 
-        <div class="experience-item">
-            <div class="exp-header">
-                <div>
-                    <div class="exp-title">Assistant Manager, Engineering</div>
-                    <div class="exp-company">PT ABO Madalex Indonesia</div>
-                </div>
-                <div class="exp-date">Jan 2019 – Present</div>
-            </div>
-            <ul class="exp-list">
-                <li>Delivered 15+ client projects using Agile/Scrum with 100% on-time delivery and 90%+ satisfaction.</li>
-                <li>Led cross-functional teams (engineering, warehouse, sales, admin) through weekly sprints and daily standups.</li>
-                <li>Designed QA processes achieving 98% compliance with technical standards, minimizing post-launch issues.</li>
-            </ul>
+            <p class="mt-6 text-sm text-slate-500 font-light">
+                Or reach me directly at <a href="mailto:bach.widy@gmail.com" class="text-blueprint-400 hover:text-blueprint-300 transition-colors">bach.widy@gmail.com</a>
+            </p>
         </div>
     </section>
 
-    <!-- The Python Suite -->
-    <section id="suite" class="section">
-        <div class="section-header">
-            <h2>Featured Projects</h2>
-        </div>
-
-        <p class="section-intro">
-            Production-ready utilities for content processing and automation. Built with performance, reliability, and scalability in mind. Each tool includes CLI interfaces, environment configuration, and progress tracking.
-        </p>
-
-        <div class="grid">
-            <div class="card">
-                <div class="card-header">
-                    <div class="card-title">Skool Downloader</div>
-                    <a href="https://github.com/134ch/bach-porto/tree/main/simple-apps/skool-downloader" target="_blank" class="github-icon">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-1.02-2.44c3.4-.38 7-1.72 7-6.96 0-1.55-.545-2.975-1.44-4.15.13-.304.63-1.56-.13-3.25 0 0-1.04-.33-3.4 1.27a11.48 11.48 0 0 0-6.16 0C6.91 2.88 5.87 3.21 5.87 3.21c-.76 1.69-.26 2.946-.13 3.25C5.545 6.025 5 7.45 5 9c0 5.24 3.6 6.58 7 6.96-.27.24-.54.73-.63 1.41-.57.25-2.01.69-2.89-.83-.09-.15-.67-.52-1.54-.51-.82.01-.53.45.01.67.44.26 1.29 1.22 1.45 1.52.25.5 1.04 1.32 2.26 1.16v3.23" />
-                        </svg>
-                    </a>
-                </div>
-                <div class="card-description">
-                    Advanced automation handling multi-step login, dynamic content scrolling, and full community archive downloads.
-                </div>
-                <div class="tech-badges">
-                    <span class="tech-badge">Python</span>
-                    <span class="tech-badge">Selenium</span>
-                    <span class="tech-badge">WebDriver</span>
-                    <span class="tech-badge">APIs</span>
-                </div>
-                <div class="cli-copy" onclick="copyCmd(event, 'python skool_downloader.py')">
-                    <span>python skool_downloader.py</span>
-                    <span>📑</span>
-                </div>
-                <a href="https://github.com/134ch/bach-porto/tree/main/simple-apps/skool-downloader" class="view-code-link" target="_blank">
-                    View Code →
-                </a>
-            </div>
-
-            <div class="card">
-                <div class="card-header">
-                    <div class="card-title">Blog Crawler</div>
-                    <a href="https://github.com/134ch/bach-porto/tree/main/simple-apps/getblog" target="_blank" class="github-icon">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-1.02-2.44c3.4-.38 7-1.72 7-6.96 0-1.55-.545-2.975-1.44-4.15.13-.304.63-1.56-.13-3.25 0 0-1.04-.33-3.4 1.27a11.48 11.48 0 0 0-6.16 0C6.91 2.88 5.87 3.21 5.87 3.21c-.76 1.69-.26 2.946-.13 3.25C5.545 6.025 5 7.45 5 9c0 5.24 3.6 6.58 7 6.96-.27.24-.54.73-.63 1.41-.57.25-2.01.69-2.89-.83-.09-.15-.67-.52-1.54-.51-.82.01-.53.45.01.67.44.26 1.29 1.22 1.45 1.52.25.5 1.04 1.32 2.26 1.16v3.23" />
-                        </svg>
-                    </a>
-                </div>
-                <div class="card-description">
-                    Fast, session-persistent crawler for article archival. Cleans text, preserves formatting, handles encoding issues.
-                </div>
-                <div class="tech-badges">
-                    <span class="tech-badge">Python</span>
-                    <span class="tech-badge">BeautifulSoup</span>
-                    <span class="tech-badge">Requests</span>
-                    <span class="tech-badge">Data Science</span>
-                </div>
-                <div class="cli-copy" onclick="copyCmd(event, 'python getblog.py')">
-                    <span>python getblog.py</span>
-                    <span>📑</span>
-                </div>
-                <a href="https://github.com/134ch/bach-porto/tree/main/simple-apps/getblog" class="view-code-link" target="_blank">
-                    View Code →
-                </a>
-            </div>
-
-            <div class="card">
-                <div class="card-header">
-                    <div class="card-title">Premium MD to PDF</div>
-                    <a href="https://github.com/134ch/bach-porto/tree/main/simple-apps/mdtopdf" target="_blank" class="github-icon">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-1.02-2.44c3.4-.38 7-1.72 7-6.96 0-1.55-.545-2.975-1.44-4.15.13-.304.63-1.56-.13-3.25 0 0-1.04-.33-3.4 1.27a11.48 11.48 0 0 0-6.16 0C6.91 2.88 5.87 3.21 5.87 3.21c-.76 1.69-.26 2.946-.13 3.25C5.545 6.025 5 7.45 5 9c0 5.24 3.6 6.58 7 6.96-.27.24-.54.73-.63 1.41-.57.25-2.01.69-2.89-.83-.09-.15-.67-.52-1.54-.51-.82.01-.53.45.01.67.44.26 1.29 1.22 1.45 1.52.25.5 1.04 1.32 2.26 1.16v3.23" />
-                        </svg>
-                    </a>
-                </div>
-                <div class="card-description">
-                    High-quality PDF conversion with custom CSS styling, page numbering, CTA blocks, and media embeds.
-                </div>
-                <div class="tech-badges">
-                    <span class="tech-badge">Python</span>
-                    <span class="tech-badge">WeasyPrint</span>
-                    <span class="tech-badge">CSS Engine</span>
-                    <span class="tech-badge">Design</span>
-                </div>
-                <div class="cli-copy" onclick="copyCmd(event, 'python mdtopdf.py')">
-                    <span>python mdtopdf.py</span>
-                    <span>📑</span>
-                </div>
-                <a href="https://github.com/134ch/bach-porto/tree/main/simple-apps/mdtopdf" class="view-code-link" target="_blank">
-                    View Code →
-                </a>
-            </div>
-        </div>
-    </section>
-
-    <!-- Technical Skills -->
-    <section id="skills" class="section">
-        <div class="section-header">
-            <h2>Technical Skills</h2>
-        </div>
-
-        <div class="skills-grid">
-            <div class="skill-group">
-                <h4>Core Languages</h4>
-                <div class="skill-tags">
-                    <span class="skill-tag">Python</span>
-                    <span class="skill-tag">JavaScript</span>
-                    <span class="skill-tag">Node.js</span>
-                    <span class="skill-tag">SQL</span>
-                    <span class="skill-tag">Git</span>
-                </div>
-            </div>
-            <div class="skill-group">
-                <h4>Cloud & Infrastructure</h4>
-                <div class="skill-tags">
-                    <span class="skill-tag">Cloudflare Pages</span>
-                    <span class="skill-tag">Cloudflare Workers</span>
-                    <span class="skill-tag">Google Cloud</span>
-                    <span class="skill-tag">PostHog Analytics</span>
-                    <span class="skill-tag">API Integration</span>
-                </div>
-            </div>
-            <div class="skill-group">
-                <h4>Software Practices</h4>
-                <div class="skill-tags">
-                    <span class="skill-tag">Agile / Scrum</span>
-                    <span class="skill-tag">Code Reviews</span>
-                    <span class="skill-tag">Testing</span>
-                    <span class="skill-tag">QA (98%+ compliance)</span>
-                    <span class="skill-tag">Documentation</span>
-                </div>
-            </div>
-            <div class="skill-group">
-                <h4>Leadership & Soft Skills</h4>
-                <div class="skill-tags">
-                    <span class="skill-tag">Problem-Solving</span>
-                    <span class="skill-tag">Team Leadership</span>
-                    <span class="skill-tag">Cross-functional Coordination</span>
-                    <span class="skill-tag">Continuous Learning</span>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Education -->
-    <section class="section">
-        <div class="section-header">
-            <h2>Education</h2>
-        </div>
-        <div class="experience-item">
-            <div class="exp-header">
-                <div class="exp-title">Bachelor of Engineering (Electrical & Electronics)</div>
-                <div class="exp-date">2020</div>
-            </div>
-            <div class="exp-company">Universitas Nasional (UNAS)</div>
-        </div>
-    </section>
-
-    <!-- CTA Section -->
-    <section class="cta-section">
-        <h3>Ready to Collaborate?</h3>
-        <p>I am actively seeking a developer role where I can contribute to meaningful projects while growing technical expertise in a professional team environment. Let's talk.</p>
-        <div class="cta-buttons">
-            <a href="mailto:bach.widy@gmail.com" class="btn btn-primary">💬 Get in Touch</a>
-            <a href="Bachtiar_Widyantoro_CV.pdf" target="_blank" class="btn btn-outline">📥 Download CV</a>
-        </div>
-    </section>
-
-    <button class="back-to-top" id="topBtn" onclick="scrollToTop()">↑</button>
-
-    <footer>
-        <div class="footer-content">
-            <div class="perf-badge">⚡ Deployed on Cloudflare Pages | Ultra-fast CDN</div>
-            <div class="social-links">
-                <a href="https://github.com/134ch" target="_blank">GITHUB</a>
-                <a href="https://linkedin.com/in/bachwidy" target="_blank">LINKEDIN</a>
-                <a href="mailto:bach.widy@gmail.com">EMAIL</a>
-            </div>
-            <p>© 2026 Bachtiar Widyantoro | Jakarta | BACHWIDY.SITE</p>
-        </div>
+    <!-- Footer -->
+    <footer class="py-8 bg-slate-950 border-t border-slate-900 text-center text-sm text-slate-600 font-light">
+        <p>© 2026 BACH. Agentic Ghostwriter. Jakarta, Indonesia.</p>
     </footer>
 
+    <!-- GSAP & ScrollTrigger -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+
     <script>
-        function copyCmd(event, text) {
-            event.preventDefault(); event.stopPropagation();
-            navigator.clipboard.writeText(text).then(() => {
-                const t = document.getElementById('toast');
-                t.style.opacity = '1'; setTimeout(() => t.style.opacity = '0', 2000);
+        gsap.registerPlugin(ScrollTrigger);
+
+        // Initial Setup
+        gsap.set(".hero-content", { y: 30, opacity: 0 });
+        gsap.set(".problem-text p", { y: 20, opacity: 0 });
+        gsap.set(".pivot-text p", { y: 20, opacity: 0 });
+        gsap.set(".solution-card", { y: 30, opacity: 0 });
+        gsap.set(".proof-card", { y: 30, opacity: 0 });
+
+        // Hero Load Animation
+        const tlLoad = gsap.timeline();
+        tlLoad.to(".hero-content", { y: 0, opacity: 1, duration: 1.2, ease: "power3.out", delay: 0.2 });
+
+        // Create spark element dynamically
+        const heroSvg = document.querySelector('#hero .svg-bg');
+        if(heroSvg) {
+            const spark = document.createElementNS("http://www.w3.org/2000/svg", "line");
+            spark.setAttribute("class", "spark");
+            spark.setAttribute("x1", "50%");
+            spark.setAttribute("x2", "50%");
+            spark.setAttribute("y1", "-20%");
+            spark.setAttribute("y2", "0%");
+            heroSvg.appendChild(spark);
+
+            gsap.to(spark, {
+                attr: { y1: "100%", y2: "120%" },
+                duration: 2.5,
+                ease: "power1.inOut",
+                repeat: -1,
+                delay: 1
             });
         }
 
-        function scrollToTop() {
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
+        // MatchMedia for responsive animations
+        let mm = gsap.matchMedia();
 
-        window.onscroll = function() {
-            const btn = document.getElementById("topBtn");
-            if (document.body.scrollTop > 500 || document.documentElement.scrollTop > 500) {
-                btn.classList.add('show');
-            } else {
-                btn.classList.remove('show');
-            }
-        };
+        mm.add("(min-width: 768px)", () => {
+            // Complex Animations for Desktop
 
-        const obs = new IntersectionObserver((es) => {
-            es.forEach(e => {
-                if (e.isIntersecting) {
-                    e.target.style.opacity = "1";
-                    e.target.style.transform = "translateY(0)";
+            // Problem Section: Noise Parallax & Text Reveal
+            gsap.to(".noise-svg", {
+                y: -100,
+                ease: "none",
+                scrollTrigger: {
+                    trigger: "#problem",
+                    start: "top bottom",
+                    end: "bottom top",
+                    scrub: true
                 }
             });
-        }, { threshold: 0.1 });
 
-        document.querySelectorAll('.experience-item, .card').forEach(el => {
-            el.style.opacity = "0"; el.style.transform = "translateY(30px)";
-            el.style.transition = "all 0.6s ease-out";
-            obs.observe(el);
+            // Draw jumbled cables
+            gsap.fromTo(".jumbled-cable",
+                { strokeDasharray: "1000", strokeDashoffset: "1000" },
+                { strokeDashoffset: "0", duration: 2, stagger: 0.3, ease: "power2.inOut",
+                  scrollTrigger: {
+                      trigger: "#problem",
+                      start: "top 60%",
+                  }
+                }
+            );
+
+            gsap.to(".problem-text p", {
+                y: 0, opacity: 1, stagger: 0.2, duration: 0.8, ease: "power2.out",
+                scrollTrigger: {
+                    trigger: "#problem",
+                    start: "top 50%",
+                }
+            });
+
+            // Pivot Section: Chaos to Order
+            const pivotTl = gsap.timeline({
+                scrollTrigger: {
+                    trigger: "#pivot",
+                    start: "top 60%",
+                }
+            });
+            pivotTl.to(".organized-svg", { opacity: 0.15, duration: 1 })
+                   .to(".grounding-rule", { opacity: 1, duration: 0.5 }, "-=0.5")
+                   .to(".pivot-title", { opacity: 1, y: 0, duration: 0.8, ease: "power2.out" }, "-=0.3")
+                   .to(".pivot-text p", { y: 0, opacity: 1, stagger: 0.2, duration: 0.8, ease: "power2.out" }, "-=0.5");
+
+            // Face module subtle parallax
+            gsap.fromTo(".face-image-container",
+                { y: 30 },
+                { y: -20, ease: "none", scrollTrigger: { trigger: "#face-module", start: "top bottom", end: "bottom top", scrub: true } }
+            );
+
+            // Solution Cards
+            gsap.to(".solution-card", {
+                y: 0, opacity: 1, stagger: 0.2, duration: 0.8, ease: "power2.out",
+                scrollTrigger: {
+                    trigger: "#solution",
+                    start: "top 60%",
+                }
+            });
+
+            // Proof Cards
+            gsap.to(".proof-card", {
+                y: 0, opacity: 1, stagger: 0.2, duration: 0.8, ease: "power2.out",
+                scrollTrigger: {
+                    trigger: "#proof",
+                    start: "top 60%",
+                }
+            });
+
         });
+
+        mm.add("(max-width: 767px)", () => {
+            // Simplified Fade-ups for Mobile to prevent jitter
+            const sections = ["#problem", "#pivot", "#solution", "#proof", "#cta"];
+
+            sections.forEach(sec => {
+                gsap.fromTo(`${sec} > div`,
+                    { opacity: 0, y: 30 },
+                    { opacity: 1, y: 0, duration: 0.8, ease: "power2.out",
+                      scrollTrigger: {
+                          trigger: sec,
+                          start: "top 75%",
+                      }
+                    }
+                );
+            });
+
+            // Set opacity back for text elements that were hidden globally
+            gsap.set(".problem-text p, .pivot-text p, .solution-card, .proof-card", { opacity: 1, y: 0 });
+        });
+
     </script>
 </body>
 </html>
