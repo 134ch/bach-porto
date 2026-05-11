@@ -2,805 +2,381 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bach Widyantoro | Full-Stack Developer & Engineer</title>
-    <!-- Google Fonts -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>BACH | Agentic Ghostwriter for EMI/EMC Consultants</title>
+
+    <!-- SEO & Meta Tags -->
+    <meta name="description" content="I build Agentic Ghostwriting systems that translate complex technical risks into clear business decisions. For EMI/EMC and Lightning Protection Engineers.">
+    <meta name="keywords" content="Agentic Ghostwriter, EMI/EMC, Lightning Protection, Technical Content, Consultant Marketing">
+    <meta name="author" content="Bachtiar Widyantoro">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://bachwidy.site/">
+    <meta property="og:title" content="BACH | Agentic Ghostwriter for EMI/EMC Consultants">
+    <meta property="og:description" content="Translating complex technical concepts into business outcomes. Bridging the gap between the $1 bolt and the $5 bolt.">
+    <meta property="og:image" content="https://bachwidy.site/og-image.jpg">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://bachwidy.site/">
+    <meta property="twitter:title" content="BACH | Agentic Ghostwriter for EMI/EMC Consultants">
+    <meta property="twitter:description" content="Translating complex technical concepts into business outcomes. Bridging the gap between the $1 bolt and the $5 bolt.">
+    <meta property="twitter:image" content="https://bachwidy.site/og-image.jpg">
+
+    <!-- Premium Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --bg-dark: #05070a;
-            --bg-card: rgba(13, 17, 23, 0.7);
-            --accent-primary: #00f2ff;
-            --accent-secondary: #7000ff;
-            --accent-success: #00ff88;
-            --text-main: #e6edf3;
-            --text-muted: #8b949e;
-            --glass-border: rgba(255, 255, 255, 0.1);
-        }
+    <link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        pitch: '#05070a',
+                        paper: '#F2F0EB',
+                        electric: '#0055FF',
+                        neon: '#CCFF00',
+                        blueprint: {
+                            500: '#3b82f6',
+                            900: '#1e3a8a',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        massive: ['Anton', 'sans-serif'],
+                    }
+                }
+            }
         }
+    </script>
 
+    <style type="text/tailwindcss">
         body {
-            background-color: var(--bg-dark);
-            background-image: 
-                radial-gradient(circle at 10% 20%, rgba(0, 242, 255, 0.05) 0%, transparent 40%),
-                radial-gradient(circle at 90% 80%, rgba(112, 0, 255, 0.05) 0%, transparent 40%);
-            color: var(--text-main);
-            font-family: 'Outfit', sans-serif;
-            line-height: 1.6;
+            background-color: theme('colors.pitch');
+            color: theme('colors.paper');
+            margin: 0;
             overflow-x: hidden;
-            scroll-behavior: smooth;
+            font-family: 'Inter', sans-serif;
         }
 
-        /* --- Decorations --- */
-        .blur-orb {
-            position: fixed;
-            width: 400px;
-            height: 400px;
-            border-radius: 50%;
-            background: var(--accent-secondary);
-            filter: blur(150px);
-            opacity: 0.1;
-            z-index: -1;
-            pointer-events: none;
+        /* Massive Mobile Typography */
+        .huge-text {
+            font-family: 'Anton', sans-serif;
+            font-size: clamp(3.5rem, 15vw, 12rem);
+            line-height: 1.1;
+            text-transform: uppercase;
+            letter-spacing: 0em;
         }
 
-        /* --- Header --- */
-        header {
-            position: fixed;
-            top: 0;
-            width: 100%;
-            padding: 1.2rem 5%;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            z-index: 1000;
-            background: rgba(5, 7, 10, 0.8);
-            backdrop-filter: blur(15px);
-            border-bottom: 1px solid var(--glass-border);
+        .sub-text {
+            font-size: clamp(1.2rem, 4vw, 2.5rem);
+            line-height: 1.3;
+            letter-spacing: -0.01em;
         }
 
-        .logo {
-            font-size: 1.3rem;
-            font-weight: 800;
-            letter-spacing: -1px;
-            background: linear-gradient(90deg, var(--accent-primary), var(--accent-secondary));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
+        .line-reveal-container { overflow: hidden; display: block; }
+        .line-reveal { display: block; transform: translateY(100%); opacity: 0; }
 
-        nav {
-            display: flex;
-            gap: 1.5rem;
-        }
-
-        nav a {
-            color: var(--text-muted);
-            text-decoration: none;
-            font-size: 0.85rem;
-            font-weight: 500;
-            transition: color 0.3s;
-        }
-
-        nav a:hover { color: var(--accent-primary); }
-
-        /* --- Hero Section --- */
-        .hero {
+        /* Layout tweaks */
+        section {
             min-height: 100vh;
             display: flex;
             flex-direction: column;
             justify-content: center;
-            align-items: center;
-            text-align: center;
-            padding: 120px 5% 60px;
-        }
-
-        .hero-tag {
-            background: rgba(0, 242, 255, 0.1);
-            color: var(--accent-primary);
-            padding: 0.5rem 1.2rem;
-            border-radius: 100px;
-            font-size: 0.8rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            margin-bottom: 1.5rem;
-            border: 1px solid rgba(0, 242, 255, 0.2);
-        }
-
-        .hero h1 {
-            font-size: clamp(2.5rem, 8vw, 5rem);
-            font-weight: 800;
-            line-height: 1.1;
-            margin-bottom: 1.5rem;
-            letter-spacing: -2px;
-        }
-
-        .hero h1 span {
-            background: linear-gradient(90deg, var(--accent-primary), var(--accent-success));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .hero p {
-            max-width: 700px;
-            color: var(--text-muted);
-            font-size: clamp(1rem, 2vw, 1.2rem);
-            margin-bottom: 3rem;
-            line-height: 1.8;
-        }
-
-        .tech-stack-hero {
-            max-width: 700px;
-            margin: 0 auto 2rem;
-            color: var(--accent-primary);
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.9rem;
-        }
-
-        .hero-buttons {
-            display: flex;
-            gap: 1.5rem;
-            flex-wrap: wrap;
-            justify-content: center;
-        }
-
-        .btn {
-            padding: 1rem 2.5rem;
-            border-radius: 8px;
-            font-weight: 600;
-            text-decoration: none;
-            transition: all 0.3s;
-            cursor: pointer;
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .btn-primary { background: var(--accent-primary); color: var(--bg-dark); }
-        .btn-primary:hover { transform: scale(1.05); box-shadow: 0 0 30px rgba(0, 242, 255, 0.4); }
-        
-        .btn-outline { border: 1px solid var(--glass-border); color: var(--text-main); }
-        .btn-outline:hover { background: var(--glass-border); }
-
-        /* --- Section Styling --- */
-        .section {
-            padding: 6rem 5%;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .section-header {
-            margin-bottom: 4rem;
-        }
-
-        .section-header h2 {
-            font-size: 2.5rem;
-            font-weight: 800;
-            margin-bottom: 1rem;
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-
-        .section-header h2::after {
-            content: '';
-            height: 1px;
-            flex-grow: 1;
-            background: var(--glass-border);
-        }
-
-        .section-intro {
-            color: var(--text-muted);
-            font-size: 1rem;
-            max-width: 800px;
-            margin-bottom: 3rem;
-            line-height: 1.8;
-        }
-
-        /* --- Grid Layouts --- */
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 2rem;
-        }
-
-        .card {
-            background: var(--bg-card);
-            padding: 2.5rem;
-            border-radius: 16px;
-            border: 1px solid var(--glass-border);
-            backdrop-filter: blur(10px);
-            transition: all 0.4s;
-            text-decoration: none;
-            color: inherit;
+            padding: 4rem 1.5rem;
             position: relative;
-            display: flex;
-            flex-direction: column;
+            z-index: 10;
         }
 
-        .card:hover {
-            border-color: var(--accent-primary);
-            transform: translateY(-8px);
-            background: rgba(13, 17, 23, 0.9);
+        @media (min-width: 768px) {
+            section {
+                padding: 6rem 3rem;
+            }
         }
 
-        .card-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            margin-bottom: 1.5rem;
+        /* Section Specific Backgrounds */
+        .bg-transition {
+            transition: background-color 0.8s ease, color 0.8s ease;
         }
 
-        .card-title {
-            font-size: 1.3rem;
-            font-weight: 700;
-            color: var(--accent-primary);
-        }
-
-        .github-icon {
-            width: 24px;
-            height: 24px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            opacity: 0.6;
-            transition: opacity 0.3s;
-        }
-
-        .card:hover .github-icon {
-            opacity: 1;
-            color: var(--accent-primary);
-        }
-
-        .card-description {
-            color: var(--text-muted);
-            font-size: 0.95rem;
-            margin-bottom: 1.5rem;
-            line-height: 1.8;
-            flex-grow: 1;
-        }
-
-        .tech-badges {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-            margin-bottom: 1.5rem;
-        }
-
-        .tech-badge {
-            background: rgba(0, 242, 255, 0.1);
-            border: 1px solid var(--accent-primary);
-            color: var(--accent-primary);
-            padding: 0.4rem 0.8rem;
-            border-radius: 6px;
-            font-size: 0.75rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .cli-copy {
-            background: #161b22;
-            padding: 0.8rem 1.2rem;
-            border-radius: 8px;
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.8rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            color: var(--accent-primary);
-            border: 1px solid #30363d;
-            cursor: pointer;
-            margin-top: auto;
-            transition: all 0.3s;
-        }
-
-        .cli-copy:hover {
-            border-color: var(--accent-primary);
-            box-shadow: 0 0 15px rgba(0, 242, 255, 0.2);
-        }
-
-        .view-code-link {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            color: var(--accent-primary);
-            text-decoration: none;
-            font-size: 0.85rem;
-            font-weight: 600;
-            margin-top: 1rem;
-            transition: all 0.3s;
-        }
-
-        .view-code-link:hover {
-            gap: 10px;
-        }
-
-        /* --- Experience & Skills Specific --- */
-        .experience-item {
-            margin-bottom: 3rem;
-            padding-left: 2rem;
-            border-left: 2px solid var(--glass-border);
-            position: relative;
-        }
-
-        .experience-item::before {
-            content: '';
-            position: absolute;
-            left: -7px;
+        /* SVG Motif */
+        .motif-container {
+            position: absolute; /* absolute to section, not fixed to body */
             top: 0;
-            width: 12px;
-            height: 12px;
-            background: var(--accent-primary);
-            border-radius: 50%;
-        }
-
-        .exp-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            margin-bottom: 1rem;
-            flex-wrap: wrap;
-            gap: 10px;
-        }
-
-        .exp-title { font-size: 1.4rem; font-weight: 700; color: var(--text-main); }
-        .exp-company { color: var(--accent-primary); font-weight: 600; font-size: 1rem; }
-        .exp-date { color: var(--text-muted); font-size: 0.9rem; font-family: 'JetBrains Mono', monospace; }
-
-        .exp-list {
-            list-style: none;
-            color: var(--text-muted);
-            font-size: 0.95rem;
-        }
-
-        .exp-list li { margin-bottom: 0.8rem; position: relative; padding-left: 1.5rem; }
-        .exp-list li::before { content: '→'; position: absolute; left: 0; color: var(--accent-success); }
-
-        .skills-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-            gap: 2rem;
-        }
-
-        .skill-group h4 {
-            font-size: 0.8rem;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            color: var(--accent-primary);
-            margin-bottom: 1.5rem;
-        }
-
-        .skill-tags { display: flex; flex-wrap: wrap; gap: 10px; }
-        .skill-tag {
-            background: rgba(255,255,255,0.05);
-            padding: 0.5rem 1rem;
-            border-radius: 6px;
-            font-size: 0.85rem;
-            border: 1px solid var(--glass-border);
-        }
-
-        /* --- CTA Section --- */
-        .cta-section {
-            background: linear-gradient(135deg, rgba(0, 242, 255, 0.05) 0%, rgba(112, 0, 255, 0.05) 100%);
-            border: 1px solid var(--glass-border);
-            border-radius: 16px;
-            padding: 4rem 3rem;
-            text-align: center;
-            margin: 6rem 5% 0;
-            max-width: 1200px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-
-        .cta-section h3 {
-            font-size: 2rem;
-            font-weight: 800;
-            margin-bottom: 1rem;
-        }
-
-        .cta-section p {
-            color: var(--text-muted);
-            font-size: 1.1rem;
-            margin-bottom: 2rem;
-            max-width: 600px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-
-        .cta-buttons {
-            display: flex;
-            gap: 1.5rem;
-            justify-content: center;
-            flex-wrap: wrap;
-        }
-
-        /* --- Footer --- */
-        footer {
-            padding: 5rem 5%;
-            text-align: center;
-            border-top: 1px solid var(--glass-border);
-            background: rgba(5,7,10,0.5);
-        }
-
-        .footer-content {
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .perf-badge {
-            display: inline-block;
-            background: rgba(0, 255, 136, 0.1);
-            border: 1px solid var(--accent-success);
-            color: var(--accent-success);
-            padding: 0.6rem 1.2rem;
-            border-radius: 6px;
-            font-size: 0.85rem;
-            font-family: 'JetBrains Mono', monospace;
-            margin-bottom: 1.5rem;
-        }
-
-        .social-links {
-            display: flex;
-            justify-content: center;
-            gap: 2.5rem;
-            margin: 2rem 0;
-        }
-
-        .social-links a { color: var(--text-main); text-decoration: none; font-weight: 600; font-size: 0.9rem; }
-        .social-links a:hover { color: var(--accent-primary); }
-
-        /* --- Back to Top --- */
-        .back-to-top {
-            position: fixed;
-            bottom: 2rem;
-            right: 2rem;
-            width: 50px;
-            height: 50px;
-            background: var(--accent-primary);
-            color: var(--bg-dark);
-            border: none;
-            border-radius: 50%;
-            cursor: pointer;
-            display: none;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.5rem;
-            transition: all 0.3s;
-            z-index: 999;
-        }
-
-        .back-to-top:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 0 25px rgba(0, 242, 255, 0.4);
-        }
-
-        .back-to-top.show {
-            display: flex;
-        }
-
-        /* --- Toast --- */
-        #toast {
-            position: fixed;
-            bottom: 2rem;
-            left: 50%;
-            transform: translateX(-50%);
-            background: var(--accent-success);
-            color: var(--bg-dark);
-            padding: 0.8rem 2rem;
-            border-radius: 50px;
-            font-weight: 600;
-            opacity: 0;
-            transition: opacity 0.3s;
-            z-index: 2000;
-        }
-
-        @media (max-width: 900px) {
-            .grid { grid-template-columns: 1fr; }
-        }
-
-        @media (max-width: 768px) {
-            header { padding: 1rem 5%; }
-            nav { gap: 1rem; }
-            nav a { font-size: 0.75rem; margin-left: 0; }
-            .hero { padding: 100px 5% 40px; }
-            .hero h1 { font-size: 3rem; }
-            .exp-header { flex-direction: column; }
-            .cta-section { padding: 2rem; }
-            .hero-buttons { flex-direction: column; width: 100%; }
-            .btn { width: 100%; justify-content: center; }
-            .back-to-top { width: 45px; height: 45px; bottom: 1.5rem; right: 1.5rem; }
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0.15;
+            overflow: hidden;
         }
     </style>
 </head>
 <body>
 
-    <div id="toast">Command Copied!</div>
-    <div class="blur-orb" style="top: 20%; left: -100px;"></div>
-    <div class="blur-orb" style="bottom: 10%; right: -100px; background: var(--accent-primary);"></div>
+    <!-- 1. Hero (Dark) -->
+    <section id="hero" class="bg-pitch text-paper">
+        <div class="motif-container hidden md:block">
+            <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+                <!-- Spark falling down -->
+                <line x1="50%" y1="-20%" x2="50%" y2="120%" stroke="#0055FF" stroke-width="2" class="spark" opacity="0.5"/>
+            </svg>
+        </div>
 
-    <header>
-        <div class="logo">BACH.WIDY</div>
-        <nav>
-            <a href="#experience">Experience</a>
-            <a href="#suite">Projects</a>
-            <a href="#skills">Skills</a>
-            <a href="https://github.com/134ch/bach-porto" target="_blank">Repository</a>
-        </nav>
-    </header>
+        <div class="max-w-7xl mx-auto w-full relative z-10">
+            <div class="mb-4 overflow-hidden">
+                <span class="block text-electric font-mono text-sm tracking-widest uppercase opacity-0 hero-fade">Agentic Ghostwriting</span>
+            </div>
 
-    <section class="hero">
-        <label class="hero-tag">Jakarta, Indonesia</label>
-        <h1>Bachtiar <span>Widyantoro</span></h1>
-        <p>Full-stack developer bridging engineering precision and modern development. I design and deploy production-ready systems—from Python automation tools to cloud infrastructure—with a focus on solving real problems.</p>
-        <div class="tech-stack-hero">Python • JavaScript • Node.js • Cloudflare • Google Cloud</div>
-        
-        <div class="hero-buttons">
-            <a href="#suite" class="btn btn-primary">Featured Work</a>
-            <a href="Bachtiar_Widyantoro_CV.pdf" target="_blank" class="btn btn-outline">📥 Download CV</a>
+            <h1 class="huge-text mb-8">
+                <span class="line-reveal-container"><span class="line-reveal">ZERO</span></span>
+                <span class="line-reveal-container"><span class="line-reveal text-electric">FAILURES.</span></span>
+                <span class="line-reveal-container"><span class="line-reveal">ZERO</span></span>
+                <span class="line-reveal-container"><span class="line-reveal text-gray-600">IMPACT.</span></span>
+            </h1>
+
+            <div class="mt-8 max-w-lg">
+                <p class="sub-text font-light text-gray-400 opacity-0 hero-fade">
+                    You've engineered a system that doesn't fail. Now, articulate its invisible value.
+                </p>
+            </div>
         </div>
     </section>
 
-    <!-- Professional Experience -->
-    <section id="experience" class="section">
-        <div class="section-header">
-            <h2>Experience</h2>
+    <!-- 2. Problem (Dark) -->
+    <section id="problem" class="bg-pitch text-paper border-t border-gray-900 overflow-hidden relative">
+        <div class="motif-container opacity-30">
+            <!-- Jumbled cables using vector-effect to maintain thin lines -->
+            <svg width="100%" height="100%" preserveAspectRatio="none" viewBox="0 0 1000 1000">
+                <path class="cable chaos" d="M100,0 Q400,300 200,600 T500,1000" fill="none" stroke="#2d3748" vector-effect="non-scaling-stroke" stroke-width="2"/>
+                <path class="cable chaos" d="M300,0 Q100,500 600,700 T300,1000" fill="none" stroke="#2d3748" vector-effect="non-scaling-stroke" stroke-width="2"/>
+            </svg>
         </div>
-        
-        <div class="experience-item">
-            <div class="exp-header">
+
+        <div class="max-w-7xl mx-auto w-full relative z-10">
+            <h2 class="huge-text mb-8 text-gray-300 problem-heading">
+                THE<br/>EXECUTION<br/>TRAP
+            </h2>
+
+            <div class="space-y-6 text-xl font-light text-gray-400 max-w-xl problem-text">
+                <p>When your true value is preventative—stopping a catastrophic failure—your expertise is invisible.</p>
+                <p class="font-medium text-white">The client only sees the cost, not the disaster it prevented.</p>
+                <p>Because of the curse of knowledge, explaining why a specific equipotential bonding approach is necessary sounds like academic noise to a business decision-maker. This translation gap costs you premium contracts.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- 3. Pivot (Light Mode Section) -->
+    <section class="bg-paper text-pitch border-t border-gray-300 bg-transition" id="pivot">
+        <div class="motif-container opacity-20 hidden md:block">
+             <svg width="100%" height="100%" preserveAspectRatio="none" viewBox="0 0 1000 1000">
+                <path class="cable straight" d="M500,0 L500,1000" fill="none" stroke="#0055FF" vector-effect="non-scaling-stroke" stroke-width="2"/>
+                <path class="cable straight" d="M520,0 L520,1000" fill="none" stroke="#0055FF" vector-effect="non-scaling-stroke" stroke-width="1"/>
+            </svg>
+        </div>
+
+        <div class="max-w-7xl mx-auto w-full grid grid-cols-1 lg:grid-cols-2 gap-16 items-center relative z-10">
+            <div>
+                <h2 class="huge-text mb-8 pivot-heading">
+                    CLEAR<br/>
+                    <span class="text-electric">SIGNALS.</span>
+                </h2>
+
+                <div class="space-y-6 text-xl font-light max-w-lg pivot-text text-gray-600">
+                    <p>For 10 years, I was a Lightning Protection Engineer. 200kA strikes. Soil resistivity. Strict bureaucracy.</p>
+                    <p class="font-semibold text-pitch">The most critical engineering failure isn't mechanical. It's communication.</p>
+                    <p>I build systems that translate engineering constraints into clear business value.</p>
+                </div>
+            </div>
+
+            <!-- Face Module -->
+            <div class="relative w-full max-w-sm mx-auto group overflow-hidden bg-white border border-gray-300 p-8 shadow-sm face-module">
+                <div class="absolute inset-0 bg-paper z-0 opacity-50"></div>
+                <div class="relative z-10 flex flex-col items-center text-center">
+                    <div class="w-full aspect-square bg-gray-200 mb-6 flex items-center justify-center grayscale">
+                        <div class="text-xs font-mono uppercase tracking-widest text-gray-500">[ PORTRAIT ]</div>
+                    </div>
+                    <div class="text-xs font-mono uppercase tracking-widest text-electric mb-2">Founder & Engineer</div>
+                    <h3 class="text-2xl font-massive text-pitch mb-2 tracking-wide">BACHTIAR WIDYANTORO</h3>
+                    <p class="text-sm font-light text-gray-600">Electrical Engineer turned Agentic Ghostwriter.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 4. Solution (Light) -->
+    <section class="bg-electric text-paper" id="solution">
+        <div class="max-w-7xl mx-auto w-full">
+            <div class="text-xs font-mono uppercase tracking-widest text-pitch/50 mb-4">The Solution</div>
+            <h2 class="huge-text mb-12 leading-none text-pitch solution-heading">
+                ENGINEERING<br/>
+                DOESN'T<br/>
+                SCALE.<br/>
+                <span class="text-paper">GHOSTWRITING<br/>DOES.</span>
+            </h2>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl solution-cards">
+                <div class="p-8 border-4 border-pitch bg-paper text-pitch">
+                    <h3 class="text-3xl font-massive mb-4 tracking-wide">01. AUTHORITY ARCHITECTURE</h3>
+                    <p class="font-light text-lg">Sales is education. We extract your expertise into skimmable, high-impact content that proves you are the safest bet. No guru speak.</p>
+                </div>
+                <div class="p-8 border-4 border-pitch bg-pitch text-paper">
+                    <h3 class="text-3xl font-massive mb-4 tracking-wide text-electric">02. AGENTIC IMPLEMENTATION</h3>
+                    <p class="font-light text-lg">A custom Ghostwriting Agent built on your technical data, streamlining go-to-market communication indefinitely.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 5. Proof (Light) -->
+    <section class="bg-paper text-pitch border-t border-gray-200" id="proof">
+        <div class="max-w-7xl mx-auto w-full">
+            <h2 class="text-sm font-mono uppercase tracking-widest mb-16 text-gray-500">Make it work vs. Don't make it fail.</h2>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 proof-cards">
                 <div>
-                    <div class="exp-title">Founder & CEO</div>
-                    <div class="exp-company">BWGhostwriting</div>
+                    <div class="h-1 w-full bg-electric mb-6"></div>
+                    <h3 class="text-4xl font-massive mb-6 text-pitch uppercase tracking-wide">The $1 Bolt vs. <br/>The $5 Bolt</h3>
+                    <p class="text-lg font-light text-gray-600 leading-relaxed max-w-md">
+                        A procurement team will always choose the $1 bolt. It's up to you to articulate why the $5 bolt prevents a $500,000 catastrophic failure. We write the collateral that wins that argument.
+                    </p>
                 </div>
-                <div class="exp-date">Feb 2025 – Present</div>
-            </div>
-            <ul class="exp-list">
-                <li>Architected a three-tier AI automation system with Build Layer (Claude Code), Runtime Layer (CrewAI/Google Cloud Run), and Interface Layer (Telegram/EdgeClaw).</li>
-                <li>Centralized LLM gateway via LiteLLM Proxy with Vertex AI, Exa API, and Chroma DB vector memory integration.</li>
-                <li>Implemented real-time analytics (PostHog) for user engagement tracking and feature iteration.</li>
-            </ul>
-        </div>
 
-        <div class="experience-item">
-            <div class="exp-header">
                 <div>
-                    <div class="exp-title">Assistant Manager, Engineering</div>
-                    <div class="exp-company">PT ABO Madalex Indonesia</div>
-                </div>
-                <div class="exp-date">Jan 2019 – Present</div>
-            </div>
-            <ul class="exp-list">
-                <li>Delivered 15+ client projects using Agile/Scrum with 100% on-time delivery and 90%+ satisfaction.</li>
-                <li>Led cross-functional teams (engineering, warehouse, sales, admin) through weekly sprints and daily standups.</li>
-                <li>Designed QA processes achieving 98% compliance with technical standards, minimizing post-launch issues.</li>
-            </ul>
-        </div>
-    </section>
-
-    <!-- The Python Suite -->
-    <section id="suite" class="section">
-        <div class="section-header">
-            <h2>Featured Projects</h2>
-        </div>
-
-        <p class="section-intro">
-            Production-ready utilities for content processing and automation. Built with performance, reliability, and scalability in mind. Each tool includes CLI interfaces, environment configuration, and progress tracking.
-        </p>
-
-        <div class="grid">
-            <div class="card">
-                <div class="card-header">
-                    <div class="card-title">Skool Downloader</div>
-                    <a href="https://github.com/134ch/bach-porto/tree/main/simple-apps/skool-downloader" target="_blank" class="github-icon">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-1.02-2.44c3.4-.38 7-1.72 7-6.96 0-1.55-.545-2.975-1.44-4.15.13-.304.63-1.56-.13-3.25 0 0-1.04-.33-3.4 1.27a11.48 11.48 0 0 0-6.16 0C6.91 2.88 5.87 3.21 5.87 3.21c-.76 1.69-.26 2.946-.13 3.25C5.545 6.025 5 7.45 5 9c0 5.24 3.6 6.58 7 6.96-.27.24-.54.73-.63 1.41-.57.25-2.01.69-2.89-.83-.09-.15-.67-.52-1.54-.51-.82.01-.53.45.01.67.44.26 1.29 1.22 1.45 1.52.25.5 1.04 1.32 2.26 1.16v3.23" />
-                        </svg>
-                    </a>
-                </div>
-                <div class="card-description">
-                    Advanced automation handling multi-step login, dynamic content scrolling, and full community archive downloads.
-                </div>
-                <div class="tech-badges">
-                    <span class="tech-badge">Python</span>
-                    <span class="tech-badge">Selenium</span>
-                    <span class="tech-badge">WebDriver</span>
-                    <span class="tech-badge">APIs</span>
-                </div>
-                <div class="cli-copy" onclick="copyCmd(event, 'python skool_downloader.py')">
-                    <span>python skool_downloader.py</span>
-                    <span>📑</span>
-                </div>
-                <a href="https://github.com/134ch/bach-porto/tree/main/simple-apps/skool-downloader" class="view-code-link" target="_blank">
-                    View Code →
-                </a>
-            </div>
-
-            <div class="card">
-                <div class="card-header">
-                    <div class="card-title">Blog Crawler</div>
-                    <a href="https://github.com/134ch/bach-porto/tree/main/simple-apps/getblog" target="_blank" class="github-icon">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-1.02-2.44c3.4-.38 7-1.72 7-6.96 0-1.55-.545-2.975-1.44-4.15.13-.304.63-1.56-.13-3.25 0 0-1.04-.33-3.4 1.27a11.48 11.48 0 0 0-6.16 0C6.91 2.88 5.87 3.21 5.87 3.21c-.76 1.69-.26 2.946-.13 3.25C5.545 6.025 5 7.45 5 9c0 5.24 3.6 6.58 7 6.96-.27.24-.54.73-.63 1.41-.57.25-2.01.69-2.89-.83-.09-.15-.67-.52-1.54-.51-.82.01-.53.45.01.67.44.26 1.29 1.22 1.45 1.52.25.5 1.04 1.32 2.26 1.16v3.23" />
-                        </svg>
-                    </a>
-                </div>
-                <div class="card-description">
-                    Fast, session-persistent crawler for article archival. Cleans text, preserves formatting, handles encoding issues.
-                </div>
-                <div class="tech-badges">
-                    <span class="tech-badge">Python</span>
-                    <span class="tech-badge">BeautifulSoup</span>
-                    <span class="tech-badge">Requests</span>
-                    <span class="tech-badge">Data Science</span>
-                </div>
-                <div class="cli-copy" onclick="copyCmd(event, 'python getblog.py')">
-                    <span>python getblog.py</span>
-                    <span>📑</span>
-                </div>
-                <a href="https://github.com/134ch/bach-porto/tree/main/simple-apps/getblog" class="view-code-link" target="_blank">
-                    View Code →
-                </a>
-            </div>
-
-            <div class="card">
-                <div class="card-header">
-                    <div class="card-title">Premium MD to PDF</div>
-                    <a href="https://github.com/134ch/bach-porto/tree/main/simple-apps/mdtopdf" target="_blank" class="github-icon">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-1.02-2.44c3.4-.38 7-1.72 7-6.96 0-1.55-.545-2.975-1.44-4.15.13-.304.63-1.56-.13-3.25 0 0-1.04-.33-3.4 1.27a11.48 11.48 0 0 0-6.16 0C6.91 2.88 5.87 3.21 5.87 3.21c-.76 1.69-.26 2.946-.13 3.25C5.545 6.025 5 7.45 5 9c0 5.24 3.6 6.58 7 6.96-.27.24-.54.73-.63 1.41-.57.25-2.01.69-2.89-.83-.09-.15-.67-.52-1.54-.51-.82.01-.53.45.01.67.44.26 1.29 1.22 1.45 1.52.25.5 1.04 1.32 2.26 1.16v3.23" />
-                        </svg>
-                    </a>
-                </div>
-                <div class="card-description">
-                    High-quality PDF conversion with custom CSS styling, page numbering, CTA blocks, and media embeds.
-                </div>
-                <div class="tech-badges">
-                    <span class="tech-badge">Python</span>
-                    <span class="tech-badge">WeasyPrint</span>
-                    <span class="tech-badge">CSS Engine</span>
-                    <span class="tech-badge">Design</span>
-                </div>
-                <div class="cli-copy" onclick="copyCmd(event, 'python mdtopdf.py')">
-                    <span>python mdtopdf.py</span>
-                    <span>📑</span>
-                </div>
-                <a href="https://github.com/134ch/bach-porto/tree/main/simple-apps/mdtopdf" class="view-code-link" target="_blank">
-                    View Code →
-                </a>
-            </div>
-        </div>
-    </section>
-
-    <!-- Technical Skills -->
-    <section id="skills" class="section">
-        <div class="section-header">
-            <h2>Technical Skills</h2>
-        </div>
-
-        <div class="skills-grid">
-            <div class="skill-group">
-                <h4>Core Languages</h4>
-                <div class="skill-tags">
-                    <span class="skill-tag">Python</span>
-                    <span class="skill-tag">JavaScript</span>
-                    <span class="skill-tag">Node.js</span>
-                    <span class="skill-tag">SQL</span>
-                    <span class="skill-tag">Git</span>
-                </div>
-            </div>
-            <div class="skill-group">
-                <h4>Cloud & Infrastructure</h4>
-                <div class="skill-tags">
-                    <span class="skill-tag">Cloudflare Pages</span>
-                    <span class="skill-tag">Cloudflare Workers</span>
-                    <span class="skill-tag">Google Cloud</span>
-                    <span class="skill-tag">PostHog Analytics</span>
-                    <span class="skill-tag">API Integration</span>
-                </div>
-            </div>
-            <div class="skill-group">
-                <h4>Software Practices</h4>
-                <div class="skill-tags">
-                    <span class="skill-tag">Agile / Scrum</span>
-                    <span class="skill-tag">Code Reviews</span>
-                    <span class="skill-tag">Testing</span>
-                    <span class="skill-tag">QA (98%+ compliance)</span>
-                    <span class="skill-tag">Documentation</span>
-                </div>
-            </div>
-            <div class="skill-group">
-                <h4>Leadership & Soft Skills</h4>
-                <div class="skill-tags">
-                    <span class="skill-tag">Problem-Solving</span>
-                    <span class="skill-tag">Team Leadership</span>
-                    <span class="skill-tag">Cross-functional Coordination</span>
-                    <span class="skill-tag">Continuous Learning</span>
+                    <div class="h-1 w-full bg-electric mb-6"></div>
+                    <h3 class="text-4xl font-massive mb-6 text-pitch uppercase tracking-wide">The Design <br/>Review ROI</h3>
+                    <p class="text-lg font-light text-gray-600 leading-relaxed max-w-md">
+                        Catching an EMI flaw during the design phase costs nothing. Fixing it after manufacturing ruins margins. By publishing educational tear-downs, you become the definitive authority.
+                    </p>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Education -->
-    <section class="section">
-        <div class="section-header">
-            <h2>Education</h2>
-        </div>
-        <div class="experience-item">
-            <div class="exp-header">
-                <div class="exp-title">Bachelor of Engineering (Electrical & Electronics)</div>
-                <div class="exp-date">2020</div>
-            </div>
-            <div class="exp-company">Universitas Nasional (UNAS)</div>
+    <!-- 6. CTA (Dark) -->
+    <section class="bg-pitch text-paper border-t border-gray-900" id="cta">
+        <div class="max-w-3xl mx-auto w-full text-center">
+            <h2 class="huge-text mb-8">
+                LET'S<br/>
+                <span class="text-neon">TALK.</span>
+            </h2>
+
+            <p class="text-xl font-light text-gray-400 mb-12">
+                No aggressive sales pitches. Just a transparent conversation about the risks and opportunities of ghostwriting your technical knowledge.
+            </p>
+
+            <form action="https://formspree.io/f/placeholder" method="POST" class="max-w-md mx-auto relative w-full">
+                <input type="email" name="email" placeholder="YOUR EMAIL" required
+                       class="w-full bg-transparent border-b-4 border-gray-800 py-6 px-2 text-paper placeholder-gray-700 focus:outline-none focus:border-neon transition-colors text-2xl font-massive uppercase">
+
+                <button type="submit" class="w-full bg-neon text-pitch py-6 px-8 font-massive text-3xl hover:bg-white transition-colors mt-8 uppercase">
+                    Start the Conversation
+                </button>
+            </form>
         </div>
     </section>
 
-    <!-- CTA Section -->
-    <section class="cta-section">
-        <h3>Ready to Collaborate?</h3>
-        <p>I am actively seeking a developer role where I can contribute to meaningful projects while growing technical expertise in a professional team environment. Let's talk.</p>
-        <div class="cta-buttons">
-            <a href="mailto:bach.widy@gmail.com" class="btn btn-primary">💬 Get in Touch</a>
-            <a href="Bachtiar_Widyantoro_CV.pdf" target="_blank" class="btn btn-outline">📥 Download CV</a>
-        </div>
-    </section>
-
-    <button class="back-to-top" id="topBtn" onclick="scrollToTop()">↑</button>
-
-    <footer>
-        <div class="footer-content">
-            <div class="perf-badge">⚡ Deployed on Cloudflare Pages | Ultra-fast CDN</div>
-            <div class="social-links">
-                <a href="https://github.com/134ch" target="_blank">GITHUB</a>
-                <a href="https://linkedin.com/in/bachwidy" target="_blank">LINKEDIN</a>
-                <a href="mailto:bach.widy@gmail.com">EMAIL</a>
-            </div>
-            <p>© 2026 Bachtiar Widyantoro | Jakarta | BACHWIDY.SITE</p>
-        </div>
-    </footer>
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
 
     <script>
-        function copyCmd(event, text) {
-            event.preventDefault(); event.stopPropagation();
-            navigator.clipboard.writeText(text).then(() => {
-                const t = document.getElementById('toast');
-                t.style.opacity = '1'; setTimeout(() => t.style.opacity = '0', 2000);
-            });
-        }
+        gsap.registerPlugin(ScrollTrigger);
 
-        function scrollToTop() {
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
+        // Initial Hero Animation
+        const heroTl = gsap.timeline();
+        heroTl.to(".line-reveal", {
+            y: "0%",
+            opacity: 1,
+            duration: 0.8,
+            stagger: 0.1,
+            ease: "power3.out",
+            delay: 0.2
+        })
+        .to(".hero-fade", {
+            opacity: 1,
+            duration: 0.8,
+            ease: "power2.out"
+        }, "-=0.3");
 
-        window.onscroll = function() {
-            const btn = document.getElementById("topBtn");
-            if (document.body.scrollTop > 500 || document.documentElement.scrollTop > 500) {
-                btn.classList.add('show');
-            } else {
-                btn.classList.remove('show');
-            }
-        };
+        gsap.to(".spark", {
+            y: "150vh",
+            duration: 2.5,
+            ease: "none",
+            repeat: -1
+        });
 
-        const obs = new IntersectionObserver((es) => {
-            es.forEach(e => {
-                if (e.isIntersecting) {
-                    e.target.style.opacity = "1";
-                    e.target.style.transform = "translateY(0)";
+        // Mobile Fallbacks
+        let mm = gsap.matchMedia();
+
+        mm.add("(min-width: 768px)", () => {
+            // Desktop GSAP
+            gsap.fromTo(".chaos",
+                { strokeDasharray: "2000", strokeDashoffset: "2000" },
+                { strokeDashoffset: "0", duration: 2, ease: "power2.inOut",
+                  scrollTrigger: { trigger: "#problem", start: "top 60%" }
                 }
-            });
-        }, { threshold: 0.1 });
+            );
 
-        document.querySelectorAll('.experience-item, .card').forEach(el => {
-            el.style.opacity = "0"; el.style.transform = "translateY(30px)";
-            el.style.transition = "all 0.6s ease-out";
-            obs.observe(el);
+            gsap.fromTo(".straight",
+                { strokeDasharray: "2000", strokeDashoffset: "2000" },
+                { strokeDashoffset: "0", duration: 2, ease: "power2.inOut",
+                  scrollTrigger: { trigger: "#pivot", start: "top 60%" }
+                }
+            );
+
+            gsap.from(".problem-heading", {
+                opacity: 0, x: -50, duration: 1,
+                scrollTrigger: { trigger: "#problem", start: "top 70%" }
+            });
+            gsap.from(".problem-text p", {
+                opacity: 0, y: 20, stagger: 0.2, duration: 0.8,
+                scrollTrigger: { trigger: "#problem", start: "top 60%" }
+            });
+
+            gsap.from(".pivot-heading", {
+                opacity: 0, scale: 0.9, duration: 1,
+                scrollTrigger: { trigger: "#pivot", start: "top 70%" }
+            });
+            gsap.from(".pivot-text p", {
+                opacity: 0, y: 20, stagger: 0.2, duration: 0.8,
+                scrollTrigger: { trigger: "#pivot", start: "top 60%" }
+            });
+
+            gsap.from(".face-module", {
+                opacity: 0, y: 50, duration: 1,
+                scrollTrigger: { trigger: "#pivot", start: "top 60%" }
+            });
+
+            gsap.from(".solution-heading", {
+                opacity: 0, y: 50, duration: 1,
+                scrollTrigger: { trigger: "#solution", start: "top 70%" }
+            });
+            gsap.from(".solution-cards > div", {
+                opacity: 0, y: 30, stagger: 0.2, duration: 0.8,
+                scrollTrigger: { trigger: "#solution", start: "top 60%" }
+            });
+
+            gsap.from(".proof-cards > div", {
+                opacity: 0, y: 30, stagger: 0.2, duration: 0.8,
+                scrollTrigger: { trigger: "#proof", start: "top 70%" }
+            });
+        });
+
+        mm.add("(max-width: 767px)", () => {
+            // Mobile: Simple Fade-ups
+            const sections = ["#problem", "#pivot", "#solution", "#proof", "#cta"];
+
+            sections.forEach(sec => {
+                gsap.from(`${sec} > div`, {
+                    opacity: 0, y: 30, duration: 0.8, ease: "power2.out",
+                    scrollTrigger: { trigger: sec, start: "top 80%" }
+                });
+            });
         });
     </script>
 </body>
